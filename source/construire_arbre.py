@@ -22,13 +22,13 @@ SORTIE = RACINE / "images" / "arbre.svg"
 POLICES = {"Fraunces": RACINE / "fonts" / "Fraunces.woff2", "Fraunces-i": RACINE / "fonts" / "Fraunces-i.woff2"}
 DIAMANT = RACINE / "images" / "diamant.png"
 
-ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d6587f"
+ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d8607f"
 GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1650
 R = 21   # rayon des pierres
 
 # Centre de chaque pierre
 CASES = {
-    "P1": (560, 62), "P2": (560, 210), 1: (560, 250),
+    "P1": (560, 40), "P2": (560, 190), 1: (560, 250),
     2: (800, 385), 3: (560, 515),
     4: (330, 660), 5: (790, 660),
     6: (330, 840), 7: (560, 840), 8: (790, 840),
@@ -40,7 +40,8 @@ CASES = {
 DECALAGE = 80   # place pour les dessins de Lapinette et du chat en tête de l'arbre
 CASES = {c: (x, y + (0 if c in ("P1", "P2") else DECALAGE)) for c, (x, y) in CASES.items()}
 FINS = {13, 14}
-OUVERTURES = {"P1": ("lapinette.png", 276, 404), "P2": ("chat-noir.png", 145, 233)}
+OUVERTURES = {"P1": "arbre-lapinette.png", "P2": "arbre-chat.png"}   # médaillons tirés de la couverture
+R_MEDAILLON = 32
 TIRAGES = {1, 3, 9, 12}
 # Les chapitres 4 et 5 tirent le même dé : leurs tiges se rejoignent en un carrefour, marqué du diamant,
 # d'où partent les trois chemins vers le pivert, le chat blanc et le renard
@@ -87,26 +88,28 @@ def couper(texte, largeur=22):
 def bas(cle, titres):
     """Point de départ des tiges : sous le titre de la pierre"""
     cx, cy = CASES[cle]
-    return cx, cy + R + 10 + 19 * len(couper(titres[cle])) + (26 if cle in FINS else 0)
+    rayon = R_MEDAILLON if cle in OUVERTURES else R
+    return cx, cy + rayon + 10 + 19 * len(couper(titres[cle])) + (26 if cle in FINS else 0)
 
 
 def pierre(cle, titre, diamant):
     cx, cy = CASES[cle]
     svg = []
     if cle in OUVERTURES:
-        # Les deux textes d'ouverture n'ont pas de numéro : Lapinette et le chat noir, dessinés par Nina
-        fichier, largeur, hauteur = OUVERTURES[cle]
-        image = base64.b64encode((RACINE / "images" / "dessins" / fichier).read_bytes()).decode()
-        h = 78
-        l = h * largeur / hauteur
-        svg.append(f'<image href="data:image/png;base64,{image}" x="{cx - l / 2:.1f}" y="{cy + R - h:.1f}" width="{l:.1f}" height="{h}"/>')
+        # Les deux textes d'ouverture n'ont pas de numéro : Lapinette et le chat noir des illustrations,
+        # en médaillons ronds cerclés de violet
+        image = base64.b64encode((RACINE / "images" / OUVERTURES[cle]).read_bytes()).decode()
+        r = R_MEDAILLON
+        svg.append(f'<image href="data:image/png;base64,{image}" x="{cx - r}" y="{cy - r}" width="{2 * r}" height="{2 * r}"/>')
+        svg.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{VIOLET}" stroke-width="2.2"/>')
     else:
         contour = BLEU if cle in FINS else VIOLET
         svg.append(f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="#fff" stroke="{contour}" stroke-width="2.2"/>')
         svg.append(f'<text x="{cx}" y="{cy + 6.5}" font-family="Fraunces" font-weight="600" font-size="18" '
                    f'text-anchor="middle" fill="{VIOLET_FONCE}">{cle}</text>')
+    rayon = R_MEDAILLON if cle in OUVERTURES else R
     for i, l in enumerate(couper(titre)):
-        svg.append(f'<text x="{cx}" y="{cy + R + 22 + i * 19}" font-family="Fraunces" font-weight="500" font-size="16.5" '
+        svg.append(f'<text x="{cx}" y="{cy + rayon + 22 + i * 19}" font-family="Fraunces" font-weight="500" font-size="16.5" '
                    f'text-anchor="middle" fill="{ENCRE}" class="halo">{html.escape(l)}</text>')
     if cle in FINS:
         y = cy + R + 22 + 19 * len(couper(titre)) + 12
@@ -143,7 +146,7 @@ def construire():
     def cible(b):
         """Les tiges s'arrêtent au-dessus du dessin pour les deux textes d'ouverture"""
         x, y = CASES[b]
-        return (x, y + R - 78 - 4 + R + 3) if b in OUVERTURES else (x, y)
+        return (x, y - R_MEDAILLON + R) if b in OUVERTURES else (x, y)
     svg += [tige(bas(a, titres), cible(b)) for a, b in sorted(renvois - communs, key=str)]
     cx, cy = CARREFOUR
     svg += [tige(bas(a, titres), (cx, cy - 2), pointe=False) for a in (4, 5)]
