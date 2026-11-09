@@ -116,7 +116,7 @@ tw-story { overflow: clip; }
 /* Chapitres centrés : l'image en tête, aussi large que possible, ses bords à peine fondus dans la page
    blanche ; le texte dessous, au centre. Une deuxième image vient à la fin du texte, avec le même fondu. */
 .page { max-width: 1000px; margin: 0 auto; }
-.cote { display: flex; justify-content: center; }
+.cote { position: relative; display: flex; justify-content: center; max-width: 34em; margin: 0 auto; }
 /* Chaque image est dans une « toile » : c'est elle qui porte le fondu, pour que le grain de papier posé
    par-dessus s'efface avec l'image. Les couleurs sont un peu adoucies. */
 .toile {
@@ -142,11 +142,12 @@ tw-story { overflow: clip; }
 }
 .toile img, .garde-image img { filter: saturate(0.75) brightness(1.04) contrast(0.95); }
 .toile img { display: block; max-width: 100%; height: auto; }
-.cote img { max-height: 72vh; width: auto; }
-.texte { max-width: 34em; margin: 0.6em auto 0; }
+.cote img { width: 34em; max-height: 72vh; object-fit: contain; }
+.cote img.portrait { width: auto; }
+.texte { max-width: 34em; margin: 0.9em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
-.suite-image { display: flex; justify-content: center; margin: 1.4em 0 0; }
-.suite-image img { max-height: 56vh; width: auto; }
+.suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 34em; }
+.suite-image img { width: 34em; max-height: 56vh; object-fit: contain; }
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -168,6 +169,25 @@ tw-story { overflow: clip; }
   font-size: 2.35em;
   line-height: 1.12;
   color: var(--encre);
+}
+
+/* Numéro du chapitre posé en bas de l'image, sur une pastille blanche */
+.numero-image {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1em;
+  transform: translateX(-50%);
+  padding: 0.35em 1.1em 0.3em;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 6px 16px -8px rgba(36, 35, 26, 0.45);
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 0.8em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--rose);
 }
 
 /* Séparateur : une campanule entre deux traits violets */
@@ -319,7 +339,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .garde {
   height: 100vh;
   display: grid;
-  grid-template-columns: min(calc(110vh * 2 / 3), 52vw) minmax(20em, 29em);
+  grid-template-columns: minmax(0, 46em) minmax(20em, 27em);
   gap: 3.5em;
   align-items: center;
   justify-content: center;
@@ -328,25 +348,14 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 }
 .garde-image {
   position: relative;
-  overflow: hidden;
-  height: 96vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+              linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
   mask-composite: intersect;
 }
-.garde-image img {
-  display: block;
-  flex: none;
-  height: 110vh;
-  width: auto;
-  margin-top: -13vh;
-}
+.garde-image img { display: block; width: 100%; height: auto; max-height: 92vh; object-fit: contain; }
 .garde-texte { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(0.7em, 2.2vh, 1.3em); }
 .garde-entete { display: flex; flex-direction: column; align-items: center; }
 .garde .surtitre {
@@ -400,8 +409,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .garde .secondaires .point { margin: 0 0.8em; color: var(--violet); }
 @media (max-width: 860px) {
   .garde { height: auto; grid-template-columns: minmax(0, 1fr); gap: 1.2em; padding-top: 1em; }
-  .garde-image { height: auto; justify-content: center; }
-  .garde-image img { height: auto; width: 100%; margin-top: -17%; }
+
 }
 
 /* Page de l'arbre */
@@ -443,10 +451,10 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   color: var(--violet-fonce);
 }
 .citation .source { display: block; margin-top: 0.5em; font-style: normal; font-size: 0.55em; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mousse); }
-.dessins { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 1.2em 2.2em; width: min(62em, 94vw); margin: 0.6em 0 0.4em 50%; transform: translateX(-50%); }
+.dessins { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1em 0.8em; margin: 0.6em auto 0.4em; }
 .dessins figure { margin: 0; }
-.dessins img { display: block; height: 7.5em; width: auto; margin: 0 auto; }
-.dessins img.large { height: 8.5em; }
+.dessins img { display: block; height: 5.6em; width: auto; margin: 0 auto; }
+.dessins img.large { height: 6.2em; }
 .dessins figcaption { margin-top: 0.4em; font-family: "Fraunces", Georgia, serif; font-style: italic; font-size: 0.92em; color: var(--violet-fonce); }
 @media (max-width: 600px) { .dessins { gap: 0.8em 1.2em; } .dessins img { height: 5em; } .dessins img.large { height: 5.5em; } }
 .table-fiches { margin: 2.6em auto 0; }
@@ -601,7 +609,9 @@ def passage_chapitre(ch, suivant):
     cote = suite_image = ""
     if imgs:
         src, portrait = imgs[0]
-        cote = f'<div class="cote"><span class="toile"><img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"]}"></span></div>'
+        numero = "" if ch["nom"].startswith("Prologue") else f'<span class="numero-image">{ch["numero"]}</span>'
+        cote = (f'<div class="cote"><span class="toile"><img class="{"portrait" if portrait else ""}" src="{src}" '
+                f'alt="{ch["titre"]}"></span>{numero}</div>')
     if len(imgs) > 1:
         suite_image = f'<div class="suite-image"><span class="toile"><img src="{imgs[1][0]}" alt=""></span></div>'
 
@@ -619,7 +629,8 @@ def passage_chapitre(ch, suivant):
                      f'{lien("Relire depuis le début", "Prologue I")}</div></div>')
     texte = ('<div class="texte">'
              # Les deux textes d'ouverture n'ont que leur titre, sans « Prologue I » ni « Prologue II »
-             + ('<h1 class="chapitre">' if ch["nom"].startswith("Prologue")
+             # Le numéro est sur l'image ; il ne reste au-dessus du titre que s'il n'y a pas d'image
+             + ('<h1 class="chapitre">' if ch["nom"].startswith("Prologue") or imgs
                 else f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>')
              + f'<span class="titre">{ch["titre"]}</span></h1>'
              + "\n\n".join(corps) + suite_image + "".join(suite) + "</div>")
@@ -636,7 +647,7 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="garde-image"><img src="images/couverture.jpg" '
+        '<div class="garde"><div class="garde-image"><img src="images/couverture-paysage.jpg" '
         'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
         '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
