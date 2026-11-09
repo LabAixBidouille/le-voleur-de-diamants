@@ -142,12 +142,14 @@ tw-story { overflow: clip; }
 }
 .toile img, .garde-image img { filter: saturate(0.75) brightness(1.04) contrast(0.95); }
 .toile img { display: block; max-width: 100%; height: auto; }
-.cote img { width: 40em; max-height: 72vh; object-fit: contain; }
-.cote img.portrait { width: auto; }
+/* Toutes les images au même format, paysage 3:2, à la largeur du texte : celles qui sont en hauteur sont
+   recadrées, un peu au-dessus du centre pour garder les visages */
+.cote, .suite-image { width: 100%; }
+.toile { width: 100%; }
+.cote img, .suite-image img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: center 40%; }
 .texte { max-width: 40em; margin: 1.5em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
 .suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 40em; }
-.suite-image img { width: 40em; max-height: 56vh; object-fit: contain; }
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -439,7 +441,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   font-size: 2.2em;
   line-height: 1.15;
   color: var(--encre);
-  margin: 0.2em 0 0;
+  margin: 1.4em 0 0;
 }
 .contexte-texte { text-align: left; }
 .citation {
