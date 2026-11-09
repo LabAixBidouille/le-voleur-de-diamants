@@ -314,63 +314,55 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-underline-offset: 0.3em;
 }
 
-/* Couverture, composée comme la couverture d'un album : le titre en haut, l'image au centre, fondue sur tous
-   ses bords dans la page blanche, puis le bouton pour entrer. Le résumé vient plus bas, en quatrième de couverture. */
-tw-story:has(.garde) { padding-top: 0; padding-bottom: 2em; }
-.une {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+/* Couverture sur deux colonnes, tout visible sans défiler : l'image à gauche, rognée de son blanc du haut et
+   fondue sur ses bords dans la page blanche ; à droite le titre, le résumé et les boutons. */
+tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
+.garde {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: min(calc(110vh * 2 / 3), 52vw) minmax(20em, 29em);
+  gap: 3.5em;
   align-items: center;
   justify-content: center;
-  padding: 2.2vh 0 2vh;
+  padding: 2vh 0;
   box-sizing: border-box;
-  text-align: center;
 }
-.garde .surtitre {
+.garde-image { overflow: hidden; height: 96vh; display: flex; justify-content: center; align-items: flex-start; }
+.garde-image img {
   display: block;
+  flex: none;
+  height: 110vh;
+  width: auto;
+  margin-top: -13vh;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
+                      linear-gradient(to bottom, transparent 12%, #000 22%, #000 88%, transparent 98%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
+              linear-gradient(to bottom, transparent 12%, #000 22%, #000 88%, transparent 98%);
+  mask-composite: intersect;
+}
+.garde-texte { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(0.7em, 2.2vh, 1.3em); }
+.garde-entete { display: flex; flex-direction: column; align-items: center; }
+.garde .surtitre {
   font-family: "Fraunces", Georgia, serif;
   font-weight: 500;
-  font-size: 0.8em;
+  font-size: 0.78em;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--violet);
 }
 .garde .grand-titre {
-  display: block;
-  margin: 0.12em 0 0;
+  margin: 0.15em 0 0.12em;
   font-family: "Fraunces", Georgia, serif;
   font-variation-settings: "SOFT" 100, "opsz" 144;
   font-weight: 500;
-  font-size: clamp(2.4em, 7.4vh, 4em);
+  font-size: clamp(2.4em, 7.2vh, 3.6em);
   line-height: 1;
   color: var(--encre);
 }
-.garde .nom-auteur {
-  display: block;
-  margin-top: 0.35em;
-  font-family: "Fraunces", Georgia, serif;
-  font-style: italic;
-  font-size: 1.25em;
-  color: var(--encre-douce);
-}
-/* Le blanc prévu en haut de l'image est rogné : le titre est déjà au-dessus */
-.garde-image { display: inline-block; overflow: hidden; margin: 0.4em 0 0; }
-.garde-image img {
-  display: block;
-  height: calc(100vh - 14em);
-  min-height: 18em;
-  width: auto;
-  max-width: 100%;
-  margin-top: -17%;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 10%, #000 80%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 10%, #000 80%, transparent 100%);
-  mask-composite: intersect;
-}
-.garde .commencer { margin-top: -0.6em; position: relative; }
+.garde .nom-auteur { font-family: "Fraunces", Georgia, serif; font-style: italic; font-size: 1.25em; color: var(--encre-douce); }
+.garde .separateur { margin: 0; }
+.garde .synopsis { font-size: clamp(0.88em, 2.1vh, 1em); line-height: 1.7; }
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
   display: inline-flex;
   align-items: center;
@@ -392,16 +384,26 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 2em; }
   transition: transform 0.3s ease;
 }
 .garde .commencer tw-link:hover::before { transform: rotate(-12deg) scale(1.15); }
-/* Quatrième de couverture */
-.quatrieme { max-width: 32em; margin: 1em auto 0; text-align: center; }
-.quatrieme .synopsis { font-size: 1em; line-height: 1.75; }
-.quatrieme .secondaires { margin-top: 1.6em; }
-@media (max-width: 600px) {
-  .garde .grand-titre { font-size: 2.3em; }
-  .garde .surtitre { font-size: 0.68em; }
-  .une { min-height: 0; padding-top: 1.5em; }
-  .garde-image img { height: auto; width: 100%; min-height: 0; }
+.garde .secondaires { font-size: 0.92em; }
+@media (max-width: 860px) {
+  .garde { height: auto; grid-template-columns: minmax(0, 1fr); gap: 1.2em; padding-top: 1em; }
+  .garde-image { height: auto; justify-content: center; }
+  .garde-image img { height: auto; width: 100%; margin-top: -17%; }
 }
+
+/* Page de l'arbre */
+.arbre .lien-retour { display: block; font-size: 0.9em; }
+.arbre-tete { text-align: center; margin: 0.5em 0 1.5em; }
+.arbre h1 {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "opsz" 72;
+  font-weight: 500;
+  font-size: 2.2em;
+  color: var(--encre);
+}
+.arbre .arbre-sous-titre { display: block; font-style: italic; color: var(--encre-douce); margin-top: 0.3em; }
+.arbre img { display: block; width: 100%; max-width: 900px; height: auto; margin: 0 auto; }
 
 /* Page « Comment est née cette histoire » */
 .contexte { max-width: 40em; margin: 1em auto 0; text-align: center; }
@@ -575,7 +577,7 @@ def passage_chapitre(ch, suivant):
             corps.append(p)
     # Le prologue I n'a pas de renvoi dans Notion : il mène au prologue II
     if not choix and not fin and suivant:
-        choix.append(lien("Poursuis au prologue II", suivant))
+        choix.append(lien("Poursuis la lecture", suivant))
 
     imgs = images(ch)
     ouverture = vignette = ""
@@ -600,8 +602,10 @@ def passage_chapitre(ch, suivant):
                      f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
                      f'{lien("Relire depuis le début", "Prologue I")}</div></div>')
     texte = ('<div class="texte">'
-             f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>'
-             f'<span class="titre">{ch["titre"]}</span></h1>'
+             # Les deux textes d'ouverture n'ont que leur titre, sans « Prologue I » ni « Prologue II »
+             + ('<h1 class="chapitre">' if ch["nom"].startswith("Prologue")
+                else f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>')
+             + f'<span class="titre">{ch["titre"]}</span></h1>'
              + "\n\n".join(corps) + vignette + "".join(suite) + "</div>")
     moment = MOMENTS.get(ch["nom"], "matin")
     return f'<div class="page moment-{moment}">{ouverture}{texte}</div>'
@@ -616,16 +620,26 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="une">'
+        '<div class="garde"><div class="garde-image"><img src="images/couverture.jpg" '
+        'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
+        '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
         f'<span class="grand-titre">{TITRE}</span>'
-        f'<span class="nom-auteur">une histoire de {AUTRICE}</span>'
-        '<div class="garde-image"><img src="images/couverture.jpg" '
-        'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
-        f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div></div>'
-        f'<div class="quatrieme">{SEPARATEUR}<div class="synopsis">{SYNOPSIS}</div>'
-        f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}</div>'
+        f'<span class="nom-auteur">une histoire de {AUTRICE}</span></div>'
+        f'{SEPARATEUR}<div class="synopsis">{SYNOPSIS}</div>'
+        f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div>'
+        f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
+        f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
         "</div></div>"
+    )
+
+
+def passage_arbre():
+    return (
+        f'<div class="arbre"><span class="lien-retour">{lien("Couverture", "Page de garde")}</span>'
+        f'<div class="arbre-tete"><h1>{TITRE}</h1>'
+        f'<span class="arbre-sous-titre">Tous les chemins de l’histoire imaginée par {AUTRICE}</span></div>'
+        '<img src="images/arbre.svg" alt="L’arbre de toutes les branches de l’histoire"></div>'
     )
 
 
@@ -670,10 +684,11 @@ def construire():
 
     passages = [
         ("Bouton couverture", "header",
-         '(unless: (a: "Page de garde", "Comment est née cette histoire") contains (passage:)\'s name)'
+         '(unless: (a: "Page de garde", "Comment est née cette histoire", "L’arbre de l’histoire") contains (passage:)\'s name)'
          '[<div class="retour">[[Couverture->Page de garde]]</div>]'),
         ("Page de garde", "", passage_garde()),
         ("Comment est née cette histoire", "", passage_contexte()),
+        ("L’arbre de l’histoire", "", passage_arbre()),
     ]
     chapitres = lire_chapitres()
     for i, ch in enumerate(chapitres):
