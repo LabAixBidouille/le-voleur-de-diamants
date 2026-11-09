@@ -48,11 +48,11 @@ TIRAGES = {1, 3, 9, 12}
 CARREFOUR = (560, 748 + DECALAGE)
 # Les nombres du dé, posés le long des tiges ou au-dessus de la pierre visée
 ETIQUETTES = [
-    ("1 à 3", 528, 395), ("4 à 6", 700, 318),
-    ("1 à 3", 420, 590), ("4 à 6", 700, 590),
+    ("1 à 3", 528, 420), ("4 à 6", 700, 345),
+    ("1 à 3", 410, 620), ("4 à 6", 712, 620),
     ("1 ou 3", 270, 812), ("2 ou 4", 604, 808), ("5 ou 6", 850, 812),
-    ("1 à 3", 430, 1075), ("4 à 6", 690, 1075),
-    ("1 à 3", 430, 1362), ("4 à 6", 690, 1362),
+    ("1 à 3", 410, 1102), ("4 à 6", 712, 1102),
+    ("1 à 3", 410, 1388), ("4 à 6", 712, 1388),
 ]
 
 
@@ -89,7 +89,7 @@ def bas(cle, titres):
     """Point de départ des tiges : sous le titre de la pierre"""
     cx, cy = CASES[cle]
     rayon = R_MEDAILLON if cle in OUVERTURES else R
-    return cx, cy + rayon + 10 + 19 * len(couper(titres[cle])) + (26 if cle in FINS else 0)
+    return cx, cy + rayon + 10 + 19 * len(couper(titres[cle])) + (26 if cle in FINS else 0) + (36 if cle in TIRAGES else 0)
 
 
 def pierre(cle, titre, diamant):
@@ -116,16 +116,20 @@ def pierre(cle, titre, diamant):
         svg.append(f'<text x="{cx}" y="{y}" font-family="Fraunces-i" font-size="26" text-anchor="middle" '
                    f'fill="{VIOLET_FONCE}">Fin</text>')
     if cle in TIRAGES:
-        svg.append(f'<image href="data:image/png;base64,{diamant}" x="{cx + R + 4}" y="{cy - 15}" width="30" height="30"/>')
+        # Le diamant sous le titre, là où partent les chemins du tirage
+        y = cy + R + 10 + 19 * len(couper(titre))
+        svg.append(f'<image href="data:image/png;base64,{diamant}" x="{cx - 16}" y="{y + 2}" width="32" height="32"/>')
     return "\n".join(svg)
 
 
-def tige(depart, arrivee, pointe=True):
-    (x1, y1), (x2, y2) = depart, arrivee
-    y2 -= (R + 3) if pointe else 14
-    h = (y2 - y1) * 0.55
-    return (f'<path d="M{x1},{y1} C{x1},{y1 + h} {x2},{y2 - h} {x2},{y2}" fill="none" stroke="{MOUSSE}" '
-            f'stroke-width="2.2" stroke-linecap="round"{' marker-end="url(#pointe)"' if pointe else ''}/>')
+def tige(depart, centre, rayon, pointe=True):
+    """Flèche droite du point de départ jusqu'au bord du cercle visé, pointe pleine"""
+    (x1, y1), (cx, cy) = depart, centre
+    dx, dy = cx - x1, cy - y1
+    longueur = (dx * dx + dy * dy) ** 0.5
+    x2, y2 = cx - dx / longueur * (rayon + 3), cy - dy / longueur * (rayon + 3)
+    return (f'<line x1="{x1}" y1="{y1}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{MOUSSE}" stroke-width="2" '
+            f'stroke-linecap="round"{' marker-end="url(#pointe)"' if pointe else ''}/>')
 
 
 def construire():
@@ -139,18 +143,18 @@ def construire():
     svg = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{GAUCHE} {HAUT} {LARGEUR} {HAUTEUR}" width="{LARGEUR}" height="{HAUTEUR}">',
            f'<defs><style>{polices} text{{font-variation-settings:"SOFT" 100;}} '
            '.halo{paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round;}</style>',
-           f'<marker id="pointe" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">'
-           f'<path d="M1,1 L8,5 L1,9" fill="none" stroke="{MOUSSE}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>']
+           f'<marker id="pointe" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">'
+           f'<path d="M0,0 L10,5 L0,10 z" fill="{MOUSSE}"/></marker></defs>']
     communs = {(a, b) for a, b in renvois if a in (4, 5)}
     assert communs == {(a, b) for a in (4, 5) for b in (6, 7, 8)}, "Les chapitres 4 et 5 ne mènent plus aux mêmes chapitres"
     def cible(b):
         """Les tiges s'arrêtent au-dessus du dessin pour les deux textes d'ouverture"""
         x, y = CASES[b]
         return (x, y - R_MEDAILLON + R) if b in OUVERTURES else (x, y)
-    svg += [tige(bas(a, titres), cible(b)) for a, b in sorted(renvois - communs, key=str)]
+    svg += [tige(bas(a, titres), CASES[b], R_MEDAILLON if b in OUVERTURES else R) for a, b in sorted(renvois - communs, key=str)]
     cx, cy = CARREFOUR
-    svg += [tige(bas(a, titres), (cx, cy - 2), pointe=False) for a in (4, 5)]
-    svg += [tige((cx, cy + 16), CASES[b]) for b in (6, 7, 8)]
+    svg += [tige(bas(a, titres), (cx, cy), 14, pointe=False) for a in (4, 5)]
+    svg += [tige((cx, cy + 16), CASES[b], R) for b in (6, 7, 8)]
     svg.append(f'<image href="data:image/png;base64,{diamant}" x="{cx - 17}" y="{cy - 17}" width="34" height="34"/>')
     for texte, x, y in ETIQUETTES:
         svg.append(f'<text x="{x}" y="{y}" font-family="Fraunces-i" font-size="15" text-anchor="middle" fill="{VIOLET_FONCE}" '

@@ -87,7 +87,7 @@ CSS = """
 /* Couleurs prises aux images : encre vert sous-bois, violet des campanules, bleu des diamants de Lapinette,
    rose de la grotte, vert mousse. Le papier est blanc partout. */
 :root {
-  --encre: #33321f;
+  --encre: #24231a;
   --encre-douce: #5d5a43;
   --violet: #7868a8;
   --violet-fonce: #564887;
@@ -104,7 +104,7 @@ html, body, tw-story { background-color: var(--papier); color: var(--encre); tra
 
 tw-story {
   font-family: "Literata", Georgia, serif;
-  font-size: 1.12em;
+  font-size: 1em;
   line-height: 1.7;
   padding: 0.8em 1.2em 3em;
   font-variation-settings: "opsz" 14;
@@ -117,10 +117,13 @@ tw-story { overflow: clip; }
    blanche ; le texte dessous, au centre. Une deuxième image vient à la fin du texte, avec le même fondu. */
 .page { max-width: 1000px; margin: 0 auto; }
 .cote { display: flex; justify-content: center; }
-.page img {
-  display: block;
+/* Chaque image est dans une « toile » : c'est elle qui porte le fondu, pour que le grain de papier posé
+   par-dessus s'efface avec l'image. Les couleurs sont un peu adoucies. */
+.toile {
+  position: relative;
+  display: inline-block;
   max-width: 100%;
-  height: auto;
+  vertical-align: top;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 3.5%, #000 96.5%, transparent 100%),
                       linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in;
@@ -128,8 +131,18 @@ tw-story { overflow: clip; }
               linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   mask-composite: intersect;
 }
+.toile::after, .garde-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.toile img, .garde-image img { filter: saturate(0.75) brightness(1.04) contrast(0.95); }
+.toile img { display: block; max-width: 100%; height: auto; }
 .cote img { max-height: 72vh; width: auto; }
-.cote img.portrait { max-height: 72vh; }
 .texte { max-width: 34em; margin: 0.6em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
 .suite-image { display: flex; justify-content: center; margin: 1.4em 0 0; }
@@ -201,9 +214,8 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   margin-top: 1.8em;
   padding: 1.3em 1.5em;
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(120, 104, 168, 0.25);
-  box-shadow: 0 10px 30px -18px rgba(86, 72, 135, 0.45);
+  background: #fdf0f3;
+  box-shadow: 0 14px 30px -14px rgba(176, 68, 102, 0.38);
 }
 .de-texte { flex: 1; min-width: 0; }
 .de .consigne {
@@ -224,7 +236,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   box-sizing: border-box;
   padding: 0.05em 0.6em;
   border-radius: 999px;
-  background: var(--rose-pale);
+  background: #fff;
   color: var(--rose-fonce);
   font-family: "Fraunces", Georgia, serif;
   font-weight: 600;
@@ -314,19 +326,26 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   padding: 2vh 0;
   box-sizing: border-box;
 }
-.garde-image { overflow: hidden; height: 96vh; display: flex; justify-content: center; align-items: flex-start; }
+.garde-image {
+  position: relative;
+  overflow: hidden;
+  height: 96vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
+              linear-gradient(to bottom, transparent 0, #000 9%, #000 88%, transparent 100%);
+  mask-composite: intersect;
+}
 .garde-image img {
   display: block;
   flex: none;
   height: 110vh;
   width: auto;
   margin-top: -13vh;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
-                      linear-gradient(to bottom, transparent 12%, #000 22%, #000 88%, transparent 98%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%),
-              linear-gradient(to bottom, transparent 12%, #000 22%, #000 88%, transparent 98%);
-  mask-composite: intersect;
 }
 .garde-texte { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(0.7em, 2.2vh, 1.3em); }
 .garde-entete { display: flex; flex-direction: column; align-items: center; }
@@ -582,9 +601,9 @@ def passage_chapitre(ch, suivant):
     cote = suite_image = ""
     if imgs:
         src, portrait = imgs[0]
-        cote = f'<div class="cote"><img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"]}"></div>'
+        cote = f'<div class="cote"><span class="toile"><img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"]}"></span></div>'
     if len(imgs) > 1:
-        suite_image = f'<div class="suite-image"><img src="{imgs[1][0]}" alt=""></div>'
+        suite_image = f'<div class="suite-image"><span class="toile"><img src="{imgs[1][0]}" alt=""></span></div>'
 
     suite = []
     if consigne:
@@ -631,12 +650,18 @@ def passage_garde():
     )
 
 
+def version_arbre():
+    import hashlib
+    return hashlib.md5((RACINE / "images" / "arbre.svg").read_bytes()).hexdigest()[:8]
+
+
 def passage_arbre():
     return (
         f'<div class="arbre"><span class="lien-retour">{lien("Couverture", "Page de garde")}</span>'
         f'<div class="arbre-tete"><h1>{TITRE}</h1>'
         f'<span class="arbre-sous-titre">Tous les chemins de l’histoire imaginée par {AUTRICE}</span></div>'
-        '<img src="images/arbre.svg" alt="L’arbre de toutes les branches de l’histoire"></div>'
+        # Le numéro de version force le navigateur à recharger l'arbre quand il change
+        f'<img src="images/arbre.svg?v={version_arbre()}" alt="L’arbre de toutes les branches de l’histoire"></div>'
     )
 
 
