@@ -62,10 +62,10 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 
 /* Couverture : l'image en hauteur telle qu'elle a été pensée, le titre posé dans son blanc du haut */
 @page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
-.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; }}
-.couverture img {{ display: block; width: 100%; height: 100%; object-fit: cover; object-position: center bottom;
+.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; padding-top: 14mm; }}
+.couverture img {{ display: block; width: 100%; height: calc(100% - 14mm); object-fit: cover; object-position: center top;
   filter: saturate(0.8) brightness(1.03); }}
-.couverture .entete {{ position: absolute; top: 9mm; left: 0; right: 0; text-align: center; }}
+.couverture .entete {{ position: absolute; top: 24mm; left: 0; right: 0; text-align: center; }}
 .couverture .surtitre {{ font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt; letter-spacing: 1.6pt;
   text-transform: uppercase; color: {ROSE}; }}
 .couverture .titre-livre {{ font-weight: 500; font-size: 27pt; line-height: 1; color: {ENCRE}; margin: 1.5mm 0 1mm;
@@ -84,6 +84,7 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
                       linear-gradient(to bottom, transparent 0, #000 4%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in; }}
+.illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
 .serre .illus img {{ aspect-ratio: 2 / 1; }}
 .serre2 .illus img {{ aspect-ratio: 5 / 2; }}
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
@@ -174,6 +175,10 @@ def chapitre(ch, suivant, pages):
         else:
             corps.append(f"<p>{e(p)}</p>")
     morceaux += corps
+    # Deuxième image du chapitre, comme sur le site : à la fin du texte, avant les choix
+    seconde = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}b.jpg"
+    if seconde.exists():
+        morceaux.append(f'<div class="illus seconde"><img src="{seconde.as_uri()}" alt=""></div>')
 
     suite = []
     if consigne:
