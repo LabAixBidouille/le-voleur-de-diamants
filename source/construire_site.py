@@ -29,11 +29,11 @@ AUTRICE = "Nina"
 
 # Résumé provisoire, à remplacer par celui de Manon
 SYNOPSIS = (
-    "Au cœur d'une forêt vivante, Lapinette veille sur cinq diamants d'eau qui gardent les sources en vie. "
-    "Un matin, elle n'en compte plus que quatre. Près de son lit de mousse, des poils noirs sont restés "
-    "accrochés aux ronces.\n\n"
-    "Ce soir, la lune se lèvera pour la septième fois. Touche le diamant, lance le dé et suis la piste "
-    "du voleur."
+    "Dans une forêt qui parle la nuit, Lapinette est née de la mousse, de la rosée et d'une étincelle "
+    "d'orage. Elle veille sur cinq diamants d'eau, grâce auxquels les sources ne tarissent jamais.\n\n"
+    "Un matin, elle n'en compte plus que quatre. Accrochés aux ronces, quelques poils noirs mènent vers "
+    "la colline, où un chat sans nom entasse les trésors des autres. La forêt lui a laissé sept levers "
+    "de lune pour tout rendre. Ce soir, la lune se lèvera pour la septième fois."
 )
 
 # Texte de Manon, modèle commun aux livres de l'atelier ; la phrase sur le genre est provisoire
@@ -430,6 +430,12 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   color: var(--violet-fonce);
 }
 .citation .source { display: block; margin-top: 0.5em; font-style: normal; font-size: 0.55em; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mousse); }
+.dessins { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 1.2em 2.2em; width: min(62em, 94vw); margin: 0.6em 0 0.4em 50%; transform: translateX(-50%); }
+.dessins figure { margin: 0; }
+.dessins img { display: block; height: 7.5em; width: auto; margin: 0 auto; }
+.dessins img.large { height: 8.5em; }
+.dessins figcaption { margin-top: 0.4em; font-family: "Fraunces", Georgia, serif; font-style: italic; font-size: 0.92em; color: var(--violet-fonce); }
+@media (max-width: 600px) { .dessins { gap: 0.8em 1.2em; } .dessins img { height: 5em; } .dessins img.large { height: 5.5em; } }
 .table-fiches { margin: 2.6em auto 0; }
 .table-fiches .titre-table { display: block; font-family: "Fraunces", Georgia, serif; font-style: italic; font-size: 1.3em; color: var(--encre); margin-bottom: 1.2em; }
 .miniatures { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 1.8em; }
@@ -649,9 +655,20 @@ def miniature(fichier, legende, description):
             f'<figcaption>{legende}</figcaption></figure>')
 
 
+def dessin(fichier, nom, classe=""):
+    return (f'<figure><img class="{classe}" src="images/dessins/{fichier}" alt="{nom}, dessiné par Nina">'
+            f'<figcaption>{nom}</figcaption></figure>')
+
+
 def passage_contexte():
     return (
         '<div class="contexte moment-matin"><span class="lien-retour">[[Couverture->Page de garde]]</span>\n'
+        # Les personnages dessinés par Nina sur ses fiches, détourés
+        '<div class="dessins">'
+        + dessin("lapinette.png", "Lapinette") + dessin("chat-noir.png", "Le chat noir")
+        + dessin("foret.png", "La forêt", "large") + dessin("pivert.png", "Le pivert")
+        + dessin("chat-blanc.png", "Le chat blanc") + dessin("renard.png", "Le renard blanc")
+        + '</div>'
         f'<h1>Comment est née cette histoire</h1>{SEPARATEUR}'
         '<div class="contexte-texte">'
         + "\n\n".join(CONTEXTE[:4])
