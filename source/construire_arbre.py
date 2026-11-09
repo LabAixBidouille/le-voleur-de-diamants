@@ -23,12 +23,12 @@ POLICES = {"Fraunces": RACINE / "fonts" / "Fraunces.woff2", "Fraunces-i": RACINE
 DIAMANT = RACINE / "images" / "diamant.png"
 
 ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d6587f"
-GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1560
+GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1650
 R = 21   # rayon des pierres
 
 # Centre de chaque pierre
 CASES = {
-    "P1": (560, 30), "P2": (560, 150), 1: (560, 250),
+    "P1": (560, 62), "P2": (560, 210), 1: (560, 250),
     2: (800, 385), 3: (560, 515),
     4: (330, 660), 5: (790, 660),
     6: (330, 840), 7: (560, 840), 8: (790, 840),
@@ -37,11 +37,14 @@ CASES = {
     12: (560, 1290),
     13: (340, 1430), 14: (780, 1430),
 }
+DECALAGE = 80   # place pour les dessins de Lapinette et du chat en tête de l'arbre
+CASES = {c: (x, y + (0 if c in ("P1", "P2") else DECALAGE)) for c, (x, y) in CASES.items()}
 FINS = {13, 14}
+OUVERTURES = {"P1": ("lapinette.png", 276, 404), "P2": ("chat-noir.png", 145, 233)}
 TIRAGES = {1, 3, 9, 12}
 # Les chapitres 4 et 5 tirent le même dé : leurs tiges se rejoignent en un carrefour, marqué du diamant,
 # d'où partent les trois chemins vers le pivert, le chat blanc et le renard
-CARREFOUR = (560, 748)
+CARREFOUR = (560, 748 + DECALAGE)
 # Les nombres du dé, posés le long des tiges ou au-dessus de la pierre visée
 ETIQUETTES = [
     ("1 à 3", 528, 395), ("4 à 6", 700, 318),
@@ -50,6 +53,9 @@ ETIQUETTES = [
     ("1 à 3", 430, 1075), ("4 à 6", 690, 1075),
     ("1 à 3", 430, 1362), ("4 à 6", 690, 1362),
 ]
+
+
+ETIQUETTES = [(texte, x, y + DECALAGE) for texte, x, y in ETIQUETTES]
 
 
 def lire_texte():
@@ -87,9 +93,13 @@ def bas(cle, titres):
 def pierre(cle, titre, diamant):
     cx, cy = CASES[cle]
     svg = []
-    if cle in ("P1", "P2"):
-        # Les deux textes d'ouverture : une petite pierre pleine, sans numéro
-        svg.append(f'<circle cx="{cx}" cy="{cy}" r="{R - 9}" fill="{VIOLET_PALE}" stroke="{VIOLET}" stroke-width="2"/>')
+    if cle in OUVERTURES:
+        # Les deux textes d'ouverture n'ont pas de numéro : Lapinette et le chat noir, dessinés par Nina
+        fichier, largeur, hauteur = OUVERTURES[cle]
+        image = base64.b64encode((RACINE / "images" / "dessins" / fichier).read_bytes()).decode()
+        h = 78
+        l = h * largeur / hauteur
+        svg.append(f'<image href="data:image/png;base64,{image}" x="{cx - l / 2:.1f}" y="{cy + R - h:.1f}" width="{l:.1f}" height="{h}"/>')
     else:
         contour = BLEU if cle in FINS else VIOLET
         svg.append(f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="#fff" stroke="{contour}" stroke-width="2.2"/>')
@@ -130,7 +140,11 @@ def construire():
            f'<path d="M1,1 L8,5 L1,9" fill="none" stroke="{MOUSSE}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>']
     communs = {(a, b) for a, b in renvois if a in (4, 5)}
     assert communs == {(a, b) for a in (4, 5) for b in (6, 7, 8)}, "Les chapitres 4 et 5 ne mènent plus aux mêmes chapitres"
-    svg += [tige(bas(a, titres), CASES[b]) for a, b in sorted(renvois - communs, key=str)]
+    def cible(b):
+        """Les tiges s'arrêtent au-dessus du dessin pour les deux textes d'ouverture"""
+        x, y = CASES[b]
+        return (x, y + R - 78 - 4 + R + 3) if b in OUVERTURES else (x, y)
+    svg += [tige(bas(a, titres), cible(b)) for a, b in sorted(renvois - communs, key=str)]
     cx, cy = CARREFOUR
     svg += [tige(bas(a, titres), (cx, cy - 2), pointe=False) for a in (4, 5)]
     svg += [tige((cx, cy + 16), CASES[b]) for b in (6, 7, 8)]
