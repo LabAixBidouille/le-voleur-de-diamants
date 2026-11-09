@@ -116,7 +116,7 @@ tw-story { overflow: clip; }
 /* Chapitres centrés : l'image en tête, aussi large que possible, ses bords à peine fondus dans la page
    blanche ; le texte dessous, au centre. Une deuxième image vient à la fin du texte, avec le même fondu. */
 .page { max-width: 1000px; margin: 0 auto; }
-.cote { position: relative; display: flex; justify-content: center; max-width: 34em; margin: 0 auto; }
+.cote { position: relative; display: flex; justify-content: center; max-width: 40em; margin: 0 auto; }
 /* Chaque image est dans une « toile » : c'est elle qui porte le fondu, pour que le grain de papier posé
    par-dessus s'efface avec l'image. Les couleurs sont un peu adoucies. */
 .toile {
@@ -142,12 +142,12 @@ tw-story { overflow: clip; }
 }
 .toile img, .garde-image img { filter: saturate(0.75) brightness(1.04) contrast(0.95); }
 .toile img { display: block; max-width: 100%; height: auto; }
-.cote img { width: 34em; max-height: 72vh; object-fit: contain; }
+.cote img { width: 40em; max-height: 72vh; object-fit: contain; }
 .cote img.portrait { width: auto; }
-.texte { max-width: 34em; margin: 1.5em auto 0; }
+.texte { max-width: 40em; margin: 1.5em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
-.suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 34em; }
-.suite-image img { width: 34em; max-height: 56vh; object-fit: contain; }
+.suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 40em; }
+.suite-image img { width: 40em; max-height: 56vh; object-fit: contain; }
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -220,20 +220,23 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   font-weight: 500;
   font-size: 1.25em;
   color: var(--violet-fonce);
-  text-decoration: underline 1px var(--violet);
-  text-underline-offset: 0.3em;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 .elan tw-link::after, .elan .enchantment-link::after { content: "→"; color: var(--rose); display: inline-block; margin-left: 0.35em; transition: transform 0.2s ease; }
 .elan tw-link:hover::after, .elan .enchantment-link:hover::after { transform: translateX(5px); }
+.elan tw-link:hover, .elan .enchantment-link:hover { color: var(--rose-fonce); }
 
 /* Le tirage : un encart clair, les choix à gauche, le diamant bleu à droite */
 .de {
   display: flex;
   align-items: center;
-  gap: 1.4em;
-  margin-top: 1.8em;
-  padding: 1.3em 1.5em;
-  border-radius: 22px;
+  gap: 1.2em;
+  margin-top: 1.6em;
+  padding: 0.9em 1.3em;
+  border-radius: 18px;
+  font-size: 0.95em;
+  line-height: 1.5;
   background: #fdf0f3;
   box-shadow: 0 14px 30px -14px rgba(176, 68, 102, 0.38);
 }
@@ -243,11 +246,11 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   font-family: "Fraunces", Georgia, serif;
   font-variation-settings: "SOFT" 100;
   font-style: italic;
-  font-size: 1.08em;
+  font-size: 1.05em;
   color: var(--violet-fonce);
-  margin-bottom: 0.8em;
+  margin-bottom: 0.45em;
 }
-.choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.65em; }
+.choix { display: flex; flex-direction: column; align-items: flex-start; gap: 0.35em; }
 .tirage { display: inline-flex; align-items: baseline; gap: 0.65em; }
 .tirage b {
   flex: none;
@@ -264,16 +267,16 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-align: center;
   white-space: nowrap;
 }
-.de .choix tw-link, .de .choix .enchantment-link { display: table; margin-top: 0.1em; white-space: nowrap; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--violet-fonce); font-weight: 500; text-decoration: underline 1px var(--violet); text-underline-offset: 0.25em; transition: text-decoration-color 0.2s ease; }
-.de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--violet-fonce); text-decoration-color: var(--violet); }
+.de .choix tw-link, .de .choix .enchantment-link { display: block; line-height: 1.35; white-space: nowrap; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--violet-fonce); font-weight: 500; text-decoration: none; transition: color 0.2s ease; }
+.de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--rose-fonce); }
 
 /* Le diamant bleu de Lapinette sert de dé : il scintille tant qu'on ne l'a pas touché, tourne sur lui-même
    puis laisse voir le nombre tiré. Le résultat écrit n'est lu que par les lecteurs d'écran. */
 .lancer { flex: none; display: flex; flex-direction: column; align-items: center; gap: 0.3em; }
 .diamant {
   position: relative;
-  width: 6.2em;
-  height: 6.2em;
+  width: 4.8em;
+  height: 4.8em;
   padding: 0;
   border: none;
   background: none;

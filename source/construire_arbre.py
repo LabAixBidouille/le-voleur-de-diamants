@@ -23,19 +23,19 @@ POLICES = {"Fraunces": RACINE / "fonts" / "Fraunces.woff2", "Fraunces-i": RACINE
 DIAMANT = RACINE / "images" / "diamant.png"
 
 ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d8607f"
-GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1580
+GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1660
 R = 21   # rayon des pierres
 
 # Centre de chaque pierre
 CASES = {
     "P1": (430, 44), "P2": (690, 44), 1: (560, 250),
     2: (800, 385), 3: (560, 515),
-    4: (330, 660), 5: (790, 660),
-    6: (330, 840), 7: (560, 840), 8: (790, 840),
-    9: (560, 1000),
-    10: (340, 1145), 11: (780, 1145),
-    12: (560, 1290),
-    13: (340, 1430), 14: (780, 1430),
+    4: (330, 690), 5: (790, 690),
+    6: (330, 870), 7: (560, 870), 8: (790, 870),
+    9: (560, 1030),
+    10: (340, 1205), 11: (780, 1205),
+    12: (560, 1350),
+    13: (340, 1520), 14: (780, 1520),
 }
 DECALAGE = 0
 CASES = {c: (x, y + (0 if c in ("P1", "P2") else DECALAGE)) for c, (x, y) in CASES.items()}
@@ -45,18 +45,11 @@ R_MEDAILLON = 32
 TIRAGES = {1, 3, 9, 12}
 # Les chapitres 4 et 5 tirent le même dé : leurs tiges se rejoignent en un carrefour, marqué du diamant,
 # d'où partent les trois chemins vers le pivert, le chat blanc et le renard
-CARREFOUR = (560, 748 + DECALAGE)
-# Les nombres du dé, posés le long des tiges ou au-dessus de la pierre visée
-ETIQUETTES = [
-    ("1 à 3", 528, 420), ("4 à 6", 700, 345),
-    ("1 à 3", 410, 620), ("4 à 6", 712, 620),
-    ("1 ou 3", 270, 812), ("2 ou 4", 604, 808), ("5 ou 6", 850, 812),
-    ("1 à 3", 410, 1102), ("4 à 6", 712, 1102),
-    ("1 à 3", 410, 1388), ("4 à 6", 712, 1388),
-]
-
-
-ETIQUETTES = [(texte, x, y + DECALAGE) for texte, x, y in ETIQUETTES]
+CARREFOUR = (560, 778 + DECALAGE)
+# Les nombres du dé, écrits au-dessus du palier de chaque flèche (ou à côté si elle descend tout droit)
+ETIQUETTES = {(1, 3): "1 à 3", (1, 2): "4 à 6", (3, 4): "1 à 3", (3, 5): "4 à 6",
+              ("J", 6): "1 ou 3", ("J", 7): "2 ou 4", ("J", 8): "5 ou 6",
+              (9, 10): "1 à 3", (9, 11): "4 à 6", (12, 13): "1 à 3", (12, 14): "4 à 6"}
 
 
 def lire_texte():
@@ -122,14 +115,32 @@ def pierre(cle, titre, diamant):
     return "\n".join(svg)
 
 
-def tige(depart, centre, rayon, pointe=True):
-    """Flèche droite du point de départ jusqu'au bord du cercle visé, pointe pleine"""
+def etiquette(texte, x, y):
+    return (f'<text x="{x}" y="{y}" font-family="Fraunces-i" font-size="15" text-anchor="middle" fill="{VIOLET_FONCE}" '
+            f'class="halo">{html.escape(texte)}</text>')
+
+
+def tige(depart, centre, rayon, texte=None, pointe=True):
+    """Flèche à angles droits : elle descend, suit un palier horizontal juste au-dessus de la pierre visée,
+    puis redescend jusqu'à son bord. Pointe pleine."""
     (x1, y1), (cx, cy) = depart, centre
-    dx, dy = cx - x1, cy - y1
-    longueur = (dx * dx + dy * dy) ** 0.5
-    x2, y2 = cx - dx / longueur * (rayon + 3), cy - dy / longueur * (rayon + 3)
-    return (f'<line x1="{x1}" y1="{y1}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{MOUSSE}" stroke-width="2" '
-            f'stroke-linecap="round"{' marker-end="url(#pointe)"' if pointe else ''}/>')
+    y2 = cy - rayon - 3
+    palier = y2 - 22
+    if x1 == cx:
+        trace = f"M{x1},{y1} V{y2}"
+        lieu = (x1 + 34, y2 - 6)
+    else:
+        trace = f"M{x1},{y1} V{palier} H{cx} V{y2}"
+        lieu = ((x1 + cx) / 2, palier - 7)
+    svg = (f'<path d="{trace}" fill="none" stroke="{MOUSSE}" stroke-width="2" stroke-linejoin="miter"'
+           f'{' marker-end="url(#pointe)"' if pointe else ''}/>')
+    return svg + (etiquette(texte, *lieu) if texte else "")
+
+
+def rejoint(depart, point):
+    """Tige sans pointe qui descend puis rejoint un point de jonction à l'horizontale"""
+    (x1, y1), (jx, jy) = depart, point
+    return f'<path d="M{x1},{y1} V{jy} H{jx}" fill="none" stroke="{MOUSSE}" stroke-width="2"/>'
 
 
 def construire():
@@ -147,27 +158,20 @@ def construire():
            f'<path d="M0,0 L10,5 L0,10 z" fill="{MOUSSE}"/></marker></defs>']
     communs = {(a, b) for a, b in renvois if a in (4, 5)}
     assert communs == {(a, b) for a in (4, 5) for b in (6, 7, 8)}, "Les chapitres 4 et 5 ne mènent plus aux mêmes chapitres"
-    def cible(b):
-        """Les tiges s'arrêtent au-dessus du dessin pour les deux textes d'ouverture"""
-        x, y = CASES[b]
-        return (x, y - R_MEDAILLON + R) if b in OUVERTURES else (x, y)
-    # Les deux textes d'ouverture côte à côte : une flèche de Lapinette vers le chat, puis leurs deux tiges
-    # se rejoignent en une seule flèche vers le chapitre 1
+    # Les deux textes d'ouverture côte à côte : leurs tiges se rejoignent en une seule flèche vers le chapitre 1
     ouverture = {("P1", "P2"), ("P2", 1)}
     assert ouverture <= renvois
-    (x1, y1), (x2, y2) = CASES["P1"], CASES["P2"]
-    svg.append(tige((x1 + R_MEDAILLON + 6, y1), (x2, y2), R_MEDAILLON))
+    (x1, _), (x2, _) = CASES["P1"], CASES["P2"]
     jx, jy = (x1 + x2) / 2, max(bas("P1", titres)[1], bas("P2", titres)[1]) + 22
-    svg += [tige(bas(c, titres), (jx, jy), 0, pointe=False) for c in ("P1", "P2")]
+    svg += [rejoint(bas(c, titres), (jx, jy)) for c in ("P1", "P2")]
     svg.append(tige((jx, jy), CASES[1], R))
-    svg += [tige(bas(a, titres), CASES[b], R) for a, b in sorted(renvois - communs - ouverture, key=str)]
+    svg += [tige(bas(a, titres), CASES[b], R, ETIQUETTES.get((a, b))) for a, b in sorted(renvois - communs - ouverture, key=str)]
     cx, cy = CARREFOUR
-    svg += [tige(bas(a, titres), (cx, cy), 14, pointe=False) for a in (4, 5)]
-    svg += [tige((cx, cy + 16), CASES[b], R) for b in (6, 7, 8)]
+    for a in (4, 5):
+        x, y = bas(a, titres)
+        svg.append(rejoint((x, y), (cx - 17 if x < cx else cx + 17, cy)))
+    svg += [tige((cx, cy + 16), CASES[b], R, ETIQUETTES[("J", b)]) for b in (6, 7, 8)]
     svg.append(f'<image href="data:image/png;base64,{diamant}" x="{cx - 17}" y="{cy - 17}" width="34" height="34"/>')
-    for texte, x, y in ETIQUETTES:
-        svg.append(f'<text x="{x}" y="{y}" font-family="Fraunces-i" font-size="15" text-anchor="middle" fill="{VIOLET_FONCE}" '
-                   f'class="halo">{html.escape(texte)}</text>')
     svg += [pierre(c, titres[c], diamant) for c in CASES]
     svg.append("</svg>")
     SORTIE.write_text("\n".join(svg), encoding="utf-8")
