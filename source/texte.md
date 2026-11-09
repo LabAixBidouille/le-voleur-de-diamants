@@ -106,11 +106,19 @@ Au-dessus de sa tête, le trou s'est refermé sous les fougères. Devant elle s'
 
 « C'est toi qui m'emmènes, maman forêt ? » souffle-t-elle.
 
-Elle avance, une patte posée contre la terre fraîche. Le tunnel tourne sous la colline. Peu à peu, les lueurs vertes laissent place à un reflet rose.
+Elle avance, une patte posée contre la terre fraîche. Le tunnel serpente sous les racines, puis remonte doucement. Peu à peu, les lueurs vertes s'effacent devant la lumière du jour.
 
-Enfin, Lapinette se glisse entre deux rochers. Elle vient d'entrer dans une grotte.
+Lapinette se hisse dehors, au bord d'un sous-bois qu'elle ne connaît pas. Sur une racine, juste devant elle, une touffe de poils noirs frémit dans le vent. La forêt l'a ramenée sur la piste.
 
-- Poursuis au chapitre 9.
+« Merci », souffle-t-elle.
+
+Derrière elle, des feuilles bruissent. Quelqu'un approche.
+
+**Lance le dé pour découvrir qui croise son chemin :**
+
+- 1 ou 3 : poursuis au chapitre 6.
+- 2 ou 4 : poursuis au chapitre 7.
+- 5 ou 6 : poursuis au chapitre 8.
 
 ## Chapitre 5. La piste noire
 
