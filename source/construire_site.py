@@ -245,7 +245,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-align: center;
   white-space: nowrap;
 }
-.de .choix tw-link, .de .choix .enchantment-link { color: var(--encre); font-weight: 500; text-decoration: underline 1px transparent; text-underline-offset: 0.25em; transition: text-decoration-color 0.2s ease; }
+.de .choix tw-link, .de .choix .enchantment-link { white-space: nowrap; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--violet-fonce); font-weight: 500; text-decoration: underline 1px var(--violet); text-underline-offset: 0.25em; transition: text-decoration-color 0.2s ease; }
 .de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--violet-fonce); text-decoration-color: var(--violet); }
 
 /* Le diamant bleu de Lapinette sert de dé : il scintille tant qu'on ne l'a pas touché, tourne sur lui-même
@@ -558,9 +558,11 @@ def passage_chapitre(ch, suivant):
                 ligne = ligne[2:].strip()
                 m = CHOIX.match(ligne)
                 if m:
-                    texte = m[2].rstrip(" .") or f"Poursuis au chapitre {m[3]}"
-                    texte = texte[0].upper() + texte[1:]
-                    choix.append(f'<span class="tirage"><b>{m[1]}</b>{lien(texte, f"Chapitre {m[3]}")}</span>')
+                    # Le résultat du dé, ce qui arrive, puis le renvoi écrit comme dans le livre
+                    texte = m[2].rstrip(" .")
+                    texte = (texte[0].upper() + texte[1:] + ". ") if texte else ""
+                    choix.append(f'<span class="tirage"><b>{m[1]}</b><span>{texte}'
+                                 f'{lien(f"Poursuis au chapitre {m[3]}", f"Chapitre {m[3]}")}</span></span>')
                     continue
                 m = RENVOI.match(ligne)
                 assert m, f"Choix illisible dans {ch['nom']} : {ligne}"
@@ -573,7 +575,7 @@ def passage_chapitre(ch, suivant):
             corps.append(p)
     # Le prologue I n'a pas de renvoi dans Notion : il mène au prologue II
     if not choix and not fin and suivant:
-        choix.append(lien("Poursuis", suivant))
+        choix.append(lien("Poursuis au prologue II", suivant))
 
     imgs = images(ch)
     ouverture = vignette = ""
