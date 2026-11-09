@@ -6,8 +6,7 @@ pages et la feuille de style du livre sont régénérées.
 
 Mise en page propre au livre de Nina : un album qui s'ouvre sur l'image. Chaque chapitre commence par son
 illustration, sans cadre, qui se fond dans le papier ; une deuxième image vient en vignette fondue à la fin
-du texte. La teinte du papier suit la journée du récit : matin doré, grotte rosée, soir lavande, nuit de la
-lune, crépuscule de la paix.
+du texte. La page est blanche partout.
 
 Usage, depuis la racine du dépôt : python3 source/construire_site.py
 """
@@ -29,11 +28,11 @@ AUTRICE = "Nina"
 
 # Résumé provisoire, à remplacer par celui de Manon
 SYNOPSIS = (
-    "Dans une forêt qui parle la nuit, Lapinette est née de la mousse, de la rosée et d'une étincelle "
-    "d'orage. Elle veille sur cinq diamants d'eau, grâce auxquels les sources ne tarissent jamais.\n\n"
-    "Un matin, elle n'en compte plus que quatre. Accrochés aux ronces, quelques poils noirs mènent vers "
-    "la colline, où un chat sans nom entasse les trésors des autres. La forêt lui a laissé sept levers "
-    "de lune pour tout rendre. Ce soir, la lune se lèvera pour la septième fois."
+    "Lapinette est née de la forêt pour veiller sur cinq diamants d'eau. Un matin, elle n'en compte plus "
+    "que quatre, et des poils noirs pendent aux ronces.\n\n"
+    "Le voleur a de grands yeux si doux qu'on en oublie de se méfier. Mais la forêt l'a prévenu : s'il "
+    "garde encore le trésor d'un autre au lever de la lune, le vent l'emportera sur la Lune.\n\n"
+    "Lance le dé et suis Lapinette sur la piste du voleur."
 )
 
 # Texte de Manon, modèle commun aux livres de l'atelier ; la phrase sur le genre est provisoire
@@ -86,7 +85,7 @@ CSS = """
 @font-face { font-family: "Literata"; font-style: italic; font-weight: 200 900; font-display: swap; src: url("fonts/Literata-i.woff2") format("woff2"); }
 
 /* Couleurs prises aux images : encre vert sous-bois, violet des campanules, bleu des diamants de Lapinette,
-   rose de la grotte, vert mousse. Le papier change très légèrement de teinte avec le moment du récit. */
+   rose de la grotte, vert mousse. Le papier est blanc partout. */
 :root {
   --encre: #33321f;
   --encre-douce: #5d5a43;
@@ -97,14 +96,9 @@ CSS = """
   --bleu-fonce: #1d4f93;
   --rose: #c95a86;
   --mousse: #7d8a3c;
-  --papier: #fbf7ec;
+  --papier: #ffffff;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); transition: background-color 1.2s ease; }
-html:has(.moment-grotte), html:has(.moment-grotte) body, tw-story:has(.moment-grotte) { --papier: #fbf1f0; }
-html:has(.moment-soir), html:has(.moment-soir) body, tw-story:has(.moment-soir) { --papier: #f4f0f7; }
-html:has(.moment-nuit), html:has(.moment-nuit) body, tw-story:has(.moment-nuit) { --papier: #edf0f7; }
-html:has(.moment-crepuscule), html:has(.moment-crepuscule) body, tw-story:has(.moment-crepuscule) { --papier: #fbf0ea; }
-html:has(.garde), html:has(.garde) body, tw-story:has(.garde) { --papier: #ffffff; }
 
 tw-story {
   font-family: "Literata", Georgia, serif;

@@ -113,6 +113,8 @@
 
 
 
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>Le voleur de diamants</title>
@@ -128,7 +130,7 @@
 @font-face { font-family: "Literata"; font-style: italic; font-weight: 200 900; font-display: swap; src: url("fonts/Literata-i.woff2") format("woff2"); }
 
 /* Couleurs prises aux images : encre vert sous-bois, violet des campanules, bleu des diamants de Lapinette,
-   rose de la grotte, vert mousse. Le papier change très légèrement de teinte avec le moment du récit. */
+   rose de la grotte, vert mousse. Le papier est blanc partout. */
 :root {
   --encre: #33321f;
   --encre-douce: #5d5a43;
@@ -139,14 +141,9 @@
   --bleu-fonce: #1d4f93;
   --rose: #c95a86;
   --mousse: #7d8a3c;
-  --papier: #fbf7ec;
+  --papier: #ffffff;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); transition: background-color 1.2s ease; }
-html:has(.moment-grotte), html:has(.moment-grotte) body, tw-story:has(.moment-grotte) { --papier: #fbf1f0; }
-html:has(.moment-soir), html:has(.moment-soir) body, tw-story:has(.moment-soir) { --papier: #f4f0f7; }
-html:has(.moment-nuit), html:has(.moment-nuit) body, tw-story:has(.moment-nuit) { --papier: #edf0f7; }
-html:has(.moment-crepuscule), html:has(.moment-crepuscule) body, tw-story:has(.moment-crepuscule) { --papier: #fbf0ea; }
-html:has(.garde), html:has(.garde) body, tw-story:has(.garde) { --papier: #ffffff; }
 
 tw-story {
   font-family: "Literata", Georgia, serif;
@@ -537,9 +534,11 @@ document.addEventListener('keydown', function (evenement) {
   var ouvert = document.querySelector('.agrandi');
   if (ouvert && evenement.key === 'Escape') ouvert.remove();
 });
-</script><tw-passagedata pid="1" name="Bouton couverture" tags="header" position="150,0" size="100,100">(unless: (a: &quot;Page de garde&quot;, &quot;Comment est née cette histoire&quot;, &quot;L’arbre de l’histoire&quot;) contains (passage:)&#x27;s name)[&lt;div class=&quot;retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/div&gt;]</tw-passagedata><tw-passagedata pid="2" name="Page de garde" tags="" position="300,0" size="100,100">&lt;div class=&quot;garde&quot;&gt;&lt;div class=&quot;garde-image&quot;&gt;&lt;img src=&quot;images/couverture.jpg&quot; alt=&quot;Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux&quot;&gt;&lt;/div&gt;&lt;div class=&quot;garde-texte&quot;&gt;&lt;div class=&quot;garde-entete&quot;&gt;&lt;span class=&quot;surtitre&quot;&gt;Une histoire dont le lecteur est le héros&lt;/span&gt;&lt;span class=&quot;grand-titre&quot;&gt;Le voleur de diamants&lt;/span&gt;&lt;span class=&quot;nom-auteur&quot;&gt;une histoire de Nina&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;synopsis&quot;&gt;Dans une forêt qui parle la nuit, Lapinette est née de la mousse, de la rosée et d’une étincelle d’orage. Elle veille sur cinq diamants d’eau, grâce auxquels les sources ne tarissent jamais.
+</script><tw-passagedata pid="1" name="Bouton couverture" tags="header" position="150,0" size="100,100">(unless: (a: &quot;Page de garde&quot;, &quot;Comment est née cette histoire&quot;, &quot;L’arbre de l’histoire&quot;) contains (passage:)&#x27;s name)[&lt;div class=&quot;retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/div&gt;]</tw-passagedata><tw-passagedata pid="2" name="Page de garde" tags="" position="300,0" size="100,100">&lt;div class=&quot;garde&quot;&gt;&lt;div class=&quot;garde-image&quot;&gt;&lt;img src=&quot;images/couverture.jpg&quot; alt=&quot;Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux&quot;&gt;&lt;/div&gt;&lt;div class=&quot;garde-texte&quot;&gt;&lt;div class=&quot;garde-entete&quot;&gt;&lt;span class=&quot;surtitre&quot;&gt;Une histoire dont le lecteur est le héros&lt;/span&gt;&lt;span class=&quot;grand-titre&quot;&gt;Le voleur de diamants&lt;/span&gt;&lt;span class=&quot;nom-auteur&quot;&gt;une histoire de Nina&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;synopsis&quot;&gt;Lapinette est née de la forêt pour veiller sur cinq diamants d’eau. Un matin, elle n’en compte plus que quatre, et des poils noirs pendent aux ronces.
 
-Un matin, elle n’en compte plus que quatre. Accrochés aux ronces, quelques poils noirs mènent vers la colline, où un chat sans nom entasse les trésors des autres. La forêt lui a laissé sept levers de lune pour tout rendre. Ce soir, la lune se lèvera pour la septième fois.&lt;/div&gt;&lt;div class=&quot;commencer&quot;&gt;[[Commencer l’histoire-&gt;Prologue I]]&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]][[L’arbre de l’histoire-&gt;L’arbre de l’histoire]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="Comment est née cette histoire" tags="" position="450,0" size="100,100">&lt;div class=&quot;contexte moment-matin&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;
+Le voleur a de grands yeux si doux qu’on en oublie de se méfier. Mais la forêt l’a prévenu : s’il garde encore le trésor d’un autre au lever de la lune, le vent l’emportera sur la Lune.
+
+Lance le dé et suis Lapinette sur la piste du voleur.&lt;/div&gt;&lt;div class=&quot;commencer&quot;&gt;[[Commencer l’histoire-&gt;Prologue I]]&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]][[L’arbre de l’histoire-&gt;L’arbre de l’histoire]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="3" name="Comment est née cette histoire" tags="" position="450,0" size="100,100">&lt;div class=&quot;contexte moment-matin&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;
 &lt;div class=&quot;dessins&quot;&gt;&lt;figure&gt;&lt;img class=&quot;&quot; src=&quot;images/dessins/lapinette.png&quot; alt=&quot;Lapinette, dessiné par Nina&quot;&gt;&lt;figcaption&gt;Lapinette&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;img class=&quot;&quot; src=&quot;images/dessins/chat-noir.png&quot; alt=&quot;Le chat noir, dessiné par Nina&quot;&gt;&lt;figcaption&gt;Le chat noir&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;img class=&quot;large&quot; src=&quot;images/dessins/foret.png&quot; alt=&quot;La forêt, dessiné par Nina&quot;&gt;&lt;figcaption&gt;La forêt&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;img class=&quot;&quot; src=&quot;images/dessins/pivert.png&quot; alt=&quot;Le pivert, dessiné par Nina&quot;&gt;&lt;figcaption&gt;Le pivert&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;img class=&quot;&quot; src=&quot;images/dessins/chat-blanc.png&quot; alt=&quot;Le chat blanc, dessiné par Nina&quot;&gt;&lt;figcaption&gt;Le chat blanc&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;img class=&quot;&quot; src=&quot;images/dessins/renard.png&quot; alt=&quot;Le renard blanc, dessiné par Nina&quot;&gt;&lt;figcaption&gt;Le renard blanc&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;&lt;h1&gt;Comment est née cette histoire&lt;/h1&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;contexte-texte&quot;&gt;En octobre 2026, le L.A.B a animé l’atelier « La quête du curry, une histoire dont tu es le héros » dans les bibliothèques Méjanes d’Aix-en-Provence. Les enfants ont été accompagnés dans la création d’un récit complet, depuis l’invention des personnages jusqu’à la construction d’une intrigue reliant les différentes étapes de leur aventure.
 
 Nous leur avons proposé d’introduire une part de hasard dans leur récit. Le résultat d’un lancer de dé pouvait modifier le déroulement de certains passages et conduire le lecteur vers un chapitre ou un autre.
@@ -620,9 +619,13 @@ Au-dessus de sa tête, le trou s’est refermé sous les fougères. Devant elle 
 
 « C’est toi qui m’emmènes, maman forêt ? » souffle-t-elle.
 
-Elle avance, une patte posée contre la terre fraîche. Le tunnel tourne sous la colline. Peu à peu, les lueurs vertes laissent place à un reflet rose.
+Elle avance, une patte posée contre la terre fraîche. Le tunnel serpente sous les racines, puis remonte doucement. Peu à peu, les lueurs vertes s’effacent devant la lumière du jour.
 
-Enfin, Lapinette se glisse entre deux rochers. Elle vient d’entrer dans une grotte.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="Chapitre 5" tags="" position="1650,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;ouverture-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-05.jpg&quot; alt=&quot;La piste noire&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 5&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La piste noire&lt;/span&gt;&lt;/h1&gt;La piste serpente entre les fougères. Ici, un poil brille sur une pierre ; là, une touffe s’accroche à l’écorce. Lapinette avance le nez près du sol, attentive au moindre indice.
+Lapinette se hisse dehors, au bord d’un sous-bois qu’elle ne connaît pas. Sur une racine, juste devant elle, une touffe de poils noirs frémit dans le vent. La forêt l’a ramenée sur la piste.
+
+« Merci », souffle-t-elle.
+
+Derrière elle, des feuilles bruissent. Quelqu’un approche.&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche le diamant pour découvrir qui croise son chemin :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;1 ou 3&lt;/b&gt;&lt;span&gt;[[Poursuis au chapitre 6-&gt;Chapitre 6]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;2 ou 4&lt;/b&gt;&lt;span&gt;[[Poursuis au chapitre 7-&gt;Chapitre 7]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;5 ou 6&lt;/b&gt;&lt;span&gt;[[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;diamant&quot; type=&quot;button&quot; aria-label=&quot;Toucher le diamant pour lancer le dé&quot;&gt;&lt;span class=&quot;pierre&quot;&gt;&lt;/span&gt;&lt;span class=&quot;face&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;aide&quot;&gt;touche le diamant&lt;/span&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="11" name="Chapitre 5" tags="" position="1650,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;ouverture-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-05.jpg&quot; alt=&quot;La piste noire&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 5&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La piste noire&lt;/span&gt;&lt;/h1&gt;La piste serpente entre les fougères. Ici, un poil brille sur une pierre ; là, une touffe s’accroche à l’écorce. Lapinette avance le nez près du sol, attentive au moindre indice.
 
 Le paquet cogne contre son ventre. De temps à autre, elle pose la patte dessus pour s’assurer qu’il est bien fermé.
 
