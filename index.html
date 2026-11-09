@@ -127,6 +127,7 @@
 
 
 
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>Le voleur de diamants</title>
@@ -201,7 +202,7 @@ tw-story { overflow: clip; }
 .toile img { display: block; max-width: 100%; height: auto; }
 .cote img { width: 34em; max-height: 72vh; object-fit: contain; }
 .cote img.portrait { width: auto; }
-.texte { max-width: 34em; margin: 0.9em auto 0; }
+.texte { max-width: 34em; margin: 1.5em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
 .suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 34em; }
 .suite-image img { width: 34em; max-height: 56vh; object-fit: contain; }
@@ -228,16 +229,16 @@ tw-story { overflow: clip; }
   color: var(--encre);
 }
 
-/* Numéro du chapitre posé en bas de l'image, sur une pastille blanche */
+/* Numéro du chapitre à cheval sur le bas de l'image, sur une pastille blanche */
 .numero-image {
   position: absolute;
   left: 50%;
-  bottom: 1.1em;
-  transform: translateX(-50%);
+  bottom: 0;
+  transform: translate(-50%, 50%);
   padding: 0.35em 1.1em 0.3em;
   border-radius: 999px;
   background: #fff;
-  box-shadow: 0 6px 16px -8px rgba(36, 35, 26, 0.45);
+  box-shadow: 0 4px 14px -6px rgba(176, 68, 102, 0.28);
   font-family: "Fraunces", Georgia, serif;
   font-weight: 600;
   font-size: 0.8em;
