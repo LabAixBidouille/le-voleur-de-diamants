@@ -29,7 +29,7 @@ R = 21   # rayon des pierres
 # Centre de chaque pierre
 CASES = {
     "P1": (430, 44), "P2": (690, 44), 1: (560, 250),
-    2: (800, 385), 3: (560, 515),
+    2: (790, 385), 3: (560, 515),
     4: (330, 690), 5: (790, 690),
     6: (330, 870), 7: (560, 870), 8: (790, 870),
     9: (560, 1030),
@@ -47,7 +47,7 @@ TIRAGES = {1, 3, 9, 12}
 # d'où partent les trois chemins vers le pivert, le chat blanc et le renard
 CARREFOUR = (560, 778 + DECALAGE)
 # Les nombres du dé, écrits au-dessus du palier de chaque flèche (ou à côté si elle descend tout droit)
-ETIQUETTES = {(1, 3): "1 à 3", (1, 2): "4 à 6", (3, 4): "1 à 3", (3, 5): "4 à 6",
+ETIQUETTES = {(1, 2): "4 à 6", (3, 4): "1 à 3", (3, 5): "4 à 6",
               ("J", 6): "1 ou 3", ("J", 7): "2 ou 4", ("J", 8): "5 ou 6",
               (9, 10): "1 à 3", (9, 11): "4 à 6", (12, 13): "1 à 3", (12, 14): "4 à 6"}
 
@@ -165,7 +165,17 @@ def construire():
     jx, jy = (x1 + x2) / 2, max(bas("P1", titres)[1], bas("P2", titres)[1]) + 22
     svg += [rejoint(bas(c, titres), (jx, jy)) for c in ("P1", "P2")]
     svg.append(tige((jx, jy), CASES[1], R))
-    svg += [tige(bas(a, titres), CASES[b], R, ETIQUETTES.get((a, b))) for a, b in sorted(renvois - communs - ouverture, key=str)]
+    # Chapitre 1 : le chemin « 1 à 3 » part à gauche, symétrique de celui du chapitre 2, et les deux se
+    # rejoignent au-dessus du chapitre 3
+    assert (1, 3) in renvois
+    x1, y1 = bas(1, titres)
+    palier1 = CASES[2][1] - R - 3 - 22
+    gauche = 2 * x1 - CASES[2][0]
+    palier3 = CASES[3][1] - R - 3 - 22
+    svg.append(f'<path d="M{x1},{y1} V{palier1} H{gauche} V{palier3} H{CASES[3][0]} V{CASES[3][1] - R - 3}" fill="none" '
+               f'stroke="{MOUSSE}" stroke-width="2" marker-end="url(#pointe)"/>')
+    svg.append(etiquette("1 à 3", (x1 + gauche) / 2, palier1 - 7))
+    svg += [tige(bas(a, titres), CASES[b], R, ETIQUETTES.get((a, b))) for a, b in sorted(renvois - communs - ouverture - {(1, 3)}, key=str)]
     cx, cy = CARREFOUR
     for a in (4, 5):
         x, y = bas(a, titres)
