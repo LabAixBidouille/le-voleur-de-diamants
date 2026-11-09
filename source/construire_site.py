@@ -111,26 +111,37 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* L'illustration d'ouverture : pas de cadre, les bords se fondent dans le papier */
-.ouverture-image { display: flex; justify-content: center; margin: 0 auto; }
-.ouverture-image img {
+/* Chapitres sur deux colonnes : les images à gauche, qui restent à l'écran pendant la lecture, le texte à
+   droite. Les images n'ont pas de cadre, leurs bords se fondent dans la page blanche. */
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 33em);
+  gap: 3.2em;
+  align-items: start;
+  justify-content: center;
+  margin-top: 0.4em;
+}
+.page:not(:has(.cote)) { grid-template-columns: minmax(0, 36em); }
+.cote { position: sticky; top: 1em; display: flex; flex-direction: column; align-items: center; gap: 0.6em; }
+.cote img {
   display: block;
-  width: auto;
-  max-width: 100%;
-  max-height: 66vh;
+  width: 100%;
+  height: auto;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 5%, #000 68%, transparent 100%);
+                      linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 5%, #000 68%, transparent 100%);
+              linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
   mask-composite: intersect;
 }
-/* Une image en hauteur reste entière à l'écran, centrée, avec les mêmes bords fondus */
-.ouverture-image.portrait img { width: auto; max-width: 100%; max-height: 82vh; }
-
-/* Le texte remonte dans le fondu de l'image */
-.texte { max-width: 34em; margin: -2.2em auto 0; position: relative; }
-.page:not(:has(.ouverture-image)) .texte { margin-top: 2em; }
+.cote img.portrait { width: auto; max-width: 100%; max-height: 88vh; }
+.cote img + img { max-height: 46vh; width: auto; max-width: 100%; }
+.texte { padding-top: 1.2em; }
+@media (max-width: 860px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: 0.8em; }
+  .cote { position: static; }
+  .cote img + img { display: none; }
+}
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -153,17 +164,6 @@ tw-story { overflow: clip; }
   line-height: 1.12;
   color: var(--encre);
 }
-
-/* Vignette : la deuxième image du chapitre, ovale, fondue dans le papier */
-.vignette { display: flex; justify-content: center; margin: 1.6em auto 0.4em; }
-.vignette img {
-  display: block;
-  width: 88%;
-  height: auto;
-  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 62%, transparent 100%);
-  mask-image: radial-gradient(ellipse closest-side, #000 62%, transparent 100%);
-}
-.vignette.portrait img { width: 58%; }
 
 /* Séparateur : une campanule entre deux traits violets */
 .separateur { display: flex; align-items: center; justify-content: center; gap: 0.6em; margin: 1.8em 0 1.4em; }
@@ -228,7 +228,8 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
 .tirage b {
   flex: none;
   display: inline-block;
-  min-width: 3.6em;
+  width: 4.4em;
+  box-sizing: border-box;
   padding: 0.05em 0.6em;
   border-radius: 999px;
   background: var(--violet-pale);
@@ -239,7 +240,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-align: center;
   white-space: nowrap;
 }
-.de .choix tw-link, .de .choix .enchantment-link { white-space: nowrap; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--violet-fonce); font-weight: 500; text-decoration: underline 1px var(--violet); text-underline-offset: 0.25em; transition: text-decoration-color 0.2s ease; }
+.de .choix tw-link, .de .choix .enchantment-link { display: table; margin-top: 0.1em; white-space: nowrap; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--violet-fonce); font-weight: 500; text-decoration: underline 1px var(--violet); text-underline-offset: 0.25em; transition: text-decoration-color 0.2s ease; }
 .de .choix tw-link:hover, .de .choix .enchantment-link:hover { color: var(--violet-fonce); text-decoration-color: var(--violet); }
 
 /* Le diamant bleu de Lapinette sert de dé : il scintille tant qu'on ne l'a pas touché, tourne sur lui-même
@@ -365,20 +366,27 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   font-variation-settings: "SOFT" 100;
   font-style: italic;
   font-weight: 500;
-  font-size: 1.55em;
+  font-size: 1.6em;
   color: var(--violet-fonce);
-  text-decoration: underline 1px var(--violet);
-  text-underline-offset: 0.3em;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
-.garde .commencer tw-link::before, .garde .commencer .enchantment-link::before {
+.garde .commencer tw-link::before, .garde .commencer .enchantment-link::before,
+.garde .commencer tw-link::after, .garde .commencer .enchantment-link::after {
   content: "";
-  width: 1.4em;
-  height: 1.4em;
+  width: 1.15em;
+  height: 1.15em;
   background: url("images/diamant.png") no-repeat center / contain;
   transition: transform 0.3s ease;
 }
-.garde .commencer tw-link:hover::before { transform: rotate(-12deg) scale(1.15); }
-.garde .secondaires { font-size: 0.92em; }
+.garde .commencer tw-link:hover { color: var(--violet); }
+.garde .commencer tw-link:hover::before { transform: rotate(-14deg) scale(1.12); }
+.garde .commencer tw-link:hover::after { transform: rotate(14deg) scale(1.12); }
+/* Les deux liens secondaires, sans soulignement, séparés par un point */
+.garde .secondaires { gap: 0; font-size: 0.95em; }
+.garde .secondaires tw-link, .garde .secondaires .enchantment-link { text-decoration: none; font-weight: 400; color: var(--encre-douce); transition: color 0.2s ease; }
+.garde .secondaires tw-link:hover { color: var(--violet-fonce); }
+.garde .secondaires .point { margin: 0 0.8em; color: var(--violet); }
 @media (max-width: 860px) {
   .garde { height: auto; grid-template-columns: minmax(0, 1fr); gap: 1.2em; padding-top: 1em; }
   .garde-image { height: auto; justify-content: center; }
@@ -446,10 +454,8 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 @media (max-width: 600px) {
   tw-story { font-size: 1.04em; padding: 0.8em 1em 3em; }
   .chapitre .titre { font-size: 1.9em; }
-  .texte { margin-top: -1em; }
   .de { flex-direction: column-reverse; align-items: stretch; }
   .lancer { align-self: center; }
-  .vignette img, .vignette.portrait img { width: 100%; }
   .miniature img { height: 10em; }
 }
 """.replace("CAMPANULE", CAMPANULE)
@@ -579,15 +585,13 @@ def passage_chapitre(ch, suivant):
     if not choix and not fin and suivant:
         choix.append(lien("Poursuis la lecture", suivant))
 
+    # Colonne de gauche : les images du chapitre, l'une sous l'autre
     imgs = images(ch)
-    ouverture = vignette = ""
+    cote = ""
     if imgs:
-        src, portrait = imgs[0]
-        ouverture = (f'<div class="ouverture-image{" portrait" if portrait else ""}">'
-                     f'<img src="{src}" alt="{ch["titre"]}"></div>')
-    if len(imgs) > 1:
-        src, portrait = imgs[1]
-        vignette = f'<div class="vignette{" portrait" if portrait else ""}"><img src="{src}" alt=""></div>'
+        cote = ('<div class="cote">' + "".join(
+            f'<img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"] if i == 0 else ""}">'
+            for i, (src, portrait) in enumerate(imgs)) + '</div>')
 
     suite = []
     if consigne:
@@ -606,9 +610,9 @@ def passage_chapitre(ch, suivant):
              + ('<h1 class="chapitre">' if ch["nom"].startswith("Prologue")
                 else f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>')
              + f'<span class="titre">{ch["titre"]}</span></h1>'
-             + "\n\n".join(corps) + vignette + "".join(suite) + "</div>")
+             + "\n\n".join(corps) + "".join(suite) + "</div>")
     moment = MOMENTS.get(ch["nom"], "matin")
-    return f'<div class="page moment-{moment}">{ouverture}{texte}</div>'
+    return f'<div class="page moment-{moment}">{cote}{texte}</div>'
 
 
 def illustration(nom):
@@ -629,7 +633,7 @@ def passage_garde():
         f'{SEPARATEUR}<div class="synopsis">{SYNOPSIS}</div>'
         f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
-        f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
+        f'<span class="point">·</span>{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
         "</div></div>"
     )
 

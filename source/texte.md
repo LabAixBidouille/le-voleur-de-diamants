@@ -116,9 +116,9 @@ Derrière elle, des feuilles bruissent. Quelqu'un approche.
 
 **Lance le dé pour découvrir qui croise son chemin :**
 
-- 1 ou 3 : poursuis au chapitre 6.
-- 2 ou 4 : poursuis au chapitre 7.
-- 5 ou 6 : poursuis au chapitre 8.
+- 1 ou 3 : trois coups secs résonnent dans les branches. Poursuis au chapitre 6.
+- 2 ou 4 : une silhouette blanche s'étire sur une souche. Poursuis au chapitre 7.
+- 5 ou 6 : un museau blanc se lève au bord du ruisseau. Poursuis au chapitre 8.
 
 ## Chapitre 5. La piste noire
 
@@ -134,9 +134,9 @@ Un bruit la fait tourner la tête. Elle n'est pas seule.
 
 **Lance le dé pour découvrir qui croise son chemin :**
 
-- 1 ou 3 : poursuis au chapitre 6.
-- 2 ou 4 : poursuis au chapitre 7.
-- 5 ou 6 : poursuis au chapitre 8.
+- 1 ou 3 : trois coups secs résonnent dans les branches. Poursuis au chapitre 6.
+- 2 ou 4 : une silhouette blanche s'étire sur une souche. Poursuis au chapitre 7.
+- 5 ou 6 : un museau blanc se lève au bord du ruisseau. Poursuis au chapitre 8.
 
 ## Chapitre 6. Trois coups dans les branches
 
@@ -303,8 +303,8 @@ Le chat serre la pierre contre lui. Il a déjà laissé passer six nuits. Cette 
 
 **Lance le dé pour connaître la fin :**
 
-- De 1 à 3 : poursuis au chapitre 13.
-- De 4 à 6 : poursuis au chapitre 14.
+- De 1 à 3 : le chat ne se résout pas à tout rendre. Poursuis au chapitre 13.
+- De 4 à 6 : le chat rassemble les diamants volés. Poursuis au chapitre 14.
 
 ## Chapitre 13. Une ombre sur la Lune
 
