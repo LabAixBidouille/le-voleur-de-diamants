@@ -64,7 +64,7 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 @page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
 .couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; padding-top: 14mm; }}
 .couverture img {{ display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top;
-  filter: saturate(0.8) brightness(1.03); }}
+  filter: saturate(0.8) brightness(1.03); opacity: 0.82; }}
 .couverture .entete {{ position: absolute; top: 24mm; left: 0; right: 0; text-align: center; }}
 .couverture .surtitre {{ font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt; letter-spacing: 1.6pt;
   text-transform: uppercase; color: {ROSE}; }}
