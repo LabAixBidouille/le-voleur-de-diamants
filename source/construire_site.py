@@ -104,44 +104,34 @@ tw-story {
   font-family: "Literata", Georgia, serif;
   font-size: 1.12em;
   line-height: 1.7;
-  padding: 1.2em 1.4em 4em;
+  padding: 0.8em 1.2em 3em;
   font-variation-settings: "opsz" 14;
 }
 tw-passage { max-width: 1120px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Chapitres sur deux colonnes : les images à gauche, qui restent à l'écran pendant la lecture, le texte à
-   droite. Les images n'ont pas de cadre, leurs bords se fondent dans la page blanche. */
-.page {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 33em);
-  gap: 3.2em;
-  align-items: start;
-  justify-content: center;
-  margin-top: 0.4em;
-}
-.page:not(:has(.cote)) { grid-template-columns: minmax(0, 36em); }
-.cote { position: sticky; top: 1em; display: flex; flex-direction: column; align-items: center; gap: 0.6em; }
-.cote img {
+/* Chapitres centrés : l'image en tête, aussi large que possible, ses bords à peine fondus dans la page
+   blanche ; le texte dessous, au centre. Une deuxième image vient à la fin du texte, avec le même fondu. */
+.page { max-width: 1000px; margin: 0 auto; }
+.cote { display: flex; justify-content: center; }
+.page img {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 3.5%, #000 96.5%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 3.5%, #000 96.5%, transparent 100%),
+              linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   mask-composite: intersect;
 }
-.cote img.portrait { width: auto; max-width: 100%; max-height: 88vh; }
-.cote img + img { max-height: 46vh; width: auto; max-width: 100%; }
-.texte { padding-top: 1.2em; }
-@media (max-width: 860px) {
-  .page { grid-template-columns: minmax(0, 1fr); gap: 0.8em; }
-  .cote { position: static; }
-  .cote img + img { display: none; }
-}
+.cote img { max-height: 72vh; width: auto; }
+.cote img.portrait { max-height: 72vh; }
+.texte { max-width: 34em; margin: 0.6em auto 0; }
+.page:not(:has(.cote)) .texte { margin-top: 1.5em; }
+.suite-image { display: flex; justify-content: center; margin: 1.4em 0 0; }
+.suite-image img { max-height: 56vh; width: auto; }
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -587,11 +577,12 @@ def passage_chapitre(ch, suivant):
 
     # Colonne de gauche : les images du chapitre, l'une sous l'autre
     imgs = images(ch)
-    cote = ""
+    cote = suite_image = ""
     if imgs:
-        cote = ('<div class="cote">' + "".join(
-            f'<img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"] if i == 0 else ""}">'
-            for i, (src, portrait) in enumerate(imgs)) + '</div>')
+        src, portrait = imgs[0]
+        cote = f'<div class="cote"><img class="{"portrait" if portrait else ""}" src="{src}" alt="{ch["titre"]}"></div>'
+    if len(imgs) > 1:
+        suite_image = f'<div class="suite-image"><img src="{imgs[1][0]}" alt=""></div>'
 
     suite = []
     if consigne:
@@ -610,7 +601,7 @@ def passage_chapitre(ch, suivant):
              + ('<h1 class="chapitre">' if ch["nom"].startswith("Prologue")
                 else f'<h1 class="chapitre"><span class="numero">{ch["numero"]}</span>')
              + f'<span class="titre">{ch["titre"]}</span></h1>'
-             + "\n\n".join(corps) + "".join(suite) + "</div>")
+             + "\n\n".join(corps) + suite_image + "".join(suite) + "</div>")
     moment = MOMENTS.get(ch["nom"], "matin")
     return f'<div class="page moment-{moment}">{cote}{texte}</div>'
 

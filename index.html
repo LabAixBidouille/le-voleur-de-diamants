@@ -119,6 +119,8 @@
 
 
 
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>Le voleur de diamants</title>
@@ -153,44 +155,34 @@ tw-story {
   font-family: "Literata", Georgia, serif;
   font-size: 1.12em;
   line-height: 1.7;
-  padding: 1.2em 1.4em 4em;
+  padding: 0.8em 1.2em 3em;
   font-variation-settings: "opsz" 14;
 }
 tw-passage { max-width: 1120px; margin: 0 auto; }
 tw-sidebar { display: none; }
 tw-story { overflow: clip; }
 
-/* Chapitres sur deux colonnes : les images à gauche, qui restent à l'écran pendant la lecture, le texte à
-   droite. Les images n'ont pas de cadre, leurs bords se fondent dans la page blanche. */
-.page {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 33em);
-  gap: 3.2em;
-  align-items: start;
-  justify-content: center;
-  margin-top: 0.4em;
-}
-.page:not(:has(.cote)) { grid-template-columns: minmax(0, 36em); }
-.cote { position: sticky; top: 1em; display: flex; flex-direction: column; align-items: center; gap: 0.6em; }
-.cote img {
+/* Chapitres centrés : l'image en tête, aussi large que possible, ses bords à peine fondus dans la page
+   blanche ; le texte dessous, au centre. Une deuxième image vient à la fin du texte, avec le même fondu. */
+.page { max-width: 1000px; margin: 0 auto; }
+.cote { display: flex; justify-content: center; }
+.page img {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 3.5%, #000 96.5%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 7%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 3.5%, #000 96.5%, transparent 100%),
+              linear-gradient(to bottom, transparent 0, #000 3.5%, #000 92%, transparent 100%);
   mask-composite: intersect;
 }
-.cote img.portrait { width: auto; max-width: 100%; max-height: 88vh; }
-.cote img + img { max-height: 46vh; width: auto; max-width: 100%; }
-.texte { padding-top: 1.2em; }
-@media (max-width: 860px) {
-  .page { grid-template-columns: minmax(0, 1fr); gap: 0.8em; }
-  .cote { position: static; }
-  .cote img + img { display: none; }
-}
+.cote img { max-height: 72vh; width: auto; }
+.cote img.portrait { max-height: 72vh; }
+.texte { max-width: 34em; margin: 0.6em auto 0; }
+.page:not(:has(.cote)) .texte { margin-top: 1.5em; }
+.suite-image { display: flex; justify-content: center; margin: 1.4em 0 0; }
+.suite-image img { max-height: 56vh; width: auto; }
 
 .chapitre { text-align: center; margin: 0 0 1.4em; font-weight: 400; font-size: 1em; line-height: 1.1; }
 .chapitre .numero {
@@ -559,7 +551,7 @@ Nina a choisi d’écrire un conte, où une forêt vivante donne naissance à se
 
 &lt;b&gt;À son origine, il y a avant tout les idées et les personnages de Nina.&lt;/b&gt;&lt;/div&gt;&lt;div class=&quot;table-fiches&quot;&gt;&lt;span class=&quot;titre-table&quot;&gt;Les fiches de l’atelier&lt;/span&gt;&lt;div class=&quot;miniatures&quot;&gt;&lt;figure&gt;&lt;button class=&quot;miniature&quot; type=&quot;button&quot; aria-label=&quot;Agrandir la fiche récit de Nina&quot;&gt;&lt;img src=&quot;images/fiches/fiche_recit.jpg&quot; alt=&quot;la fiche récit de Nina&quot;&gt;&lt;/button&gt;&lt;figcaption&gt;Le récit&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;button class=&quot;miniature&quot; type=&quot;button&quot; aria-label=&quot;Agrandir la fiche personnage de Lapinette&quot;&gt;&lt;img src=&quot;images/fiches/fiche_personnage_lapinette.jpg&quot; alt=&quot;la fiche personnage de Lapinette&quot;&gt;&lt;/button&gt;&lt;figcaption&gt;Une fiche personnage&lt;/figcaption&gt;&lt;/figure&gt;&lt;figure&gt;&lt;button class=&quot;miniature&quot; type=&quot;button&quot; aria-label=&quot;Agrandir la fiche situation n° 1, avec ses choix au dé&quot;&gt;&lt;img src=&quot;images/fiches/fiche_situation_1.jpg&quot; alt=&quot;la fiche situation n° 1, avec ses choix au dé&quot;&gt;&lt;/button&gt;&lt;figcaption&gt;Une fiche à embranchement&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;credits&quot;&gt;Une histoire librement inspirée du récit de Nina.
 Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.&lt;/span&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Commencer le livre-&gt;Prologue I]]&lt;/div&gt;
-&lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="L’arbre de l’histoire" tags="" position="600,0" size="100,100">&lt;div class=&quot;arbre&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;&lt;div class=&quot;arbre-tete&quot;&gt;&lt;h1&gt;Le voleur de diamants&lt;/h1&gt;&lt;span class=&quot;arbre-sous-titre&quot;&gt;Tous les chemins de l’histoire imaginée par Nina&lt;/span&gt;&lt;/div&gt;&lt;img src=&quot;images/arbre.svg&quot; alt=&quot;L’arbre de toutes les branches de l’histoire&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="Prologue I" tags="" position="750,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/prologue-1.jpg&quot; alt=&quot;La gardienne des diamants&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/prologue-1b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;titre&quot;&gt;La gardienne des diamants&lt;/span&gt;&lt;/h1&gt;Il existe une forêt où les arbres se parlent la nuit, où les sources chantent sous la mousse et où les feuilles gardent un peu de lumière après le coucher du soleil. Les voyageurs qui la traversent n’y voient que des branches et des fougères. Mais ceux qui prennent le temps d’écouter savent qu’elle est vivante.
+&lt;/div&gt;</tw-passagedata><tw-passagedata pid="4" name="L’arbre de l’histoire" tags="" position="600,0" size="100,100">&lt;div class=&quot;arbre&quot;&gt;&lt;span class=&quot;lien-retour&quot;&gt;[[Couverture-&gt;Page de garde]]&lt;/span&gt;&lt;div class=&quot;arbre-tete&quot;&gt;&lt;h1&gt;Le voleur de diamants&lt;/h1&gt;&lt;span class=&quot;arbre-sous-titre&quot;&gt;Tous les chemins de l’histoire imaginée par Nina&lt;/span&gt;&lt;/div&gt;&lt;img src=&quot;images/arbre.svg&quot; alt=&quot;L’arbre de toutes les branches de l’histoire&quot;&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="5" name="Prologue I" tags="" position="750,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/prologue-1.jpg&quot; alt=&quot;La gardienne des diamants&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;titre&quot;&gt;La gardienne des diamants&lt;/span&gt;&lt;/h1&gt;Il existe une forêt où les arbres se parlent la nuit, où les sources chantent sous la mousse et où les feuilles gardent un peu de lumière après le coucher du soleil. Les voyageurs qui la traversent n’y voient que des branches et des fougères. Mais ceux qui prennent le temps d’écouter savent qu’elle est vivante.
 
 Au cœur de cette forêt reposent cinq diamants bleus. Ce sont des diamants d’eau, si clairs que la lumière semble y flotter. Grâce à leur magie, l’eau ne manque jamais : elle abreuve les animaux et désaltère les arbres, les fleurs et les fougères.
 
@@ -571,7 +563,7 @@ Une petite lapine a ouvert les yeux. La forêt lui a répondu par un murmure de 
 
 Ses longues oreilles se dressent au murmure des branches. Dans ses grands yeux tachetés se reflète la lumière du sous-bois. Sur sa poitrine, une étoile semble en garder un peu d’éclat. De la rosée, elle a reçu le pouvoir de guider l’eau ; de l’étincelle, celui de faire naître le feu. Quant à la mousse, elle lui a laissé un pelage doux et le goût des siestes à l’ombre.
 
-La forêt est sa maison et, d’une certaine manière, sa maman.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis la lecture-&gt;Prologue II]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Prologue II" tags="" position="900,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/prologue-2.jpg&quot; alt=&quot;Le voleur sans nom&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;titre&quot;&gt;Le voleur sans nom&lt;/span&gt;&lt;/h1&gt;Bien longtemps avant la naissance de Lapinette, la forêt a donné vie à un chat noir. Elle lui a confié trois diamants roses, qu’il devait protéger dans une grotte, à l’abri de la colline.
+La forêt est sa maison et, d’une certaine manière, sa maman.&lt;div class=&quot;suite-image&quot;&gt;&lt;img src=&quot;images/chapitres/prologue-1b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis la lecture-&gt;Prologue II]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="6" name="Prologue II" tags="" position="900,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/prologue-2.jpg&quot; alt=&quot;Le voleur sans nom&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;titre&quot;&gt;Le voleur sans nom&lt;/span&gt;&lt;/h1&gt;Bien longtemps avant la naissance de Lapinette, la forêt a donné vie à un chat noir. Elle lui a confié trois diamants roses, qu’il devait protéger dans une grotte, à l’abri de la colline.
 
 Mais le chat a fini par trouver ses trois pierres bien peu nombreuses. Il voyait briller les trésors des autres et rêvait de les ajouter aux siens. Une nuit, il a volé un diamant. Puis un autre. Bientôt, sa grotte en était pleine.
 
@@ -643,7 +635,7 @@ Elle finit par déboucher dans une clairière. De l’autre côté, plusieurs ch
 
 Lapinette se redresse. La forêt, qui lui semble si familière autour de son lit de mousse, lui paraît soudain immense.
 
-Un bruit la fait tourner la tête. Elle n’est pas seule.&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche le diamant pour découvrir qui croise son chemin :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;1 ou 3&lt;/b&gt;&lt;span&gt;Trois coups secs résonnent dans les branches. [[Poursuis au chapitre 6-&gt;Chapitre 6]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;2 ou 4&lt;/b&gt;&lt;span&gt;Une silhouette blanche s’étire sur une souche. [[Poursuis au chapitre 7-&gt;Chapitre 7]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;5 ou 6&lt;/b&gt;&lt;span&gt;Un museau blanc se lève au bord du ruisseau. [[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;diamant&quot; type=&quot;button&quot; aria-label=&quot;Toucher le diamant pour lancer le dé&quot;&gt;&lt;span class=&quot;pierre&quot;&gt;&lt;/span&gt;&lt;span class=&quot;face&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;aide&quot;&gt;touche le diamant&lt;/span&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="Chapitre 6" tags="" position="1800,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-06.jpg&quot; alt=&quot;Trois coups dans les branches&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-06b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 6&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Trois coups dans les branches&lt;/span&gt;&lt;/h1&gt;Toc, toc, toc. Un pivert travaille sur le tronc d’un vieux chêne.
+Un bruit la fait tourner la tête. Elle n’est pas seule.&lt;div class=&quot;de&quot;&gt;&lt;div class=&quot;de-texte&quot;&gt;&lt;span class=&quot;consigne&quot;&gt;Touche le diamant pour découvrir qui croise son chemin :&lt;/span&gt;&lt;div class=&quot;choix&quot;&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;1 ou 3&lt;/b&gt;&lt;span&gt;Trois coups secs résonnent dans les branches. [[Poursuis au chapitre 6-&gt;Chapitre 6]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;2 ou 4&lt;/b&gt;&lt;span&gt;Une silhouette blanche s’étire sur une souche. [[Poursuis au chapitre 7-&gt;Chapitre 7]]&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;tirage&quot;&gt;&lt;b&gt;5 ou 6&lt;/b&gt;&lt;span&gt;Un museau blanc se lève au bord du ruisseau. [[Poursuis au chapitre 8-&gt;Chapitre 8]]&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;lancer&quot;&gt;&lt;button class=&quot;diamant&quot; type=&quot;button&quot; aria-label=&quot;Toucher le diamant pour lancer le dé&quot;&gt;&lt;span class=&quot;pierre&quot;&gt;&lt;/span&gt;&lt;span class=&quot;face&quot;&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;aide&quot;&gt;touche le diamant&lt;/span&gt;&lt;span class=&quot;resultat&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="12" name="Chapitre 6" tags="" position="1800,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-06.jpg&quot; alt=&quot;Trois coups dans les branches&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 6&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Trois coups dans les branches&lt;/span&gt;&lt;/h1&gt;Toc, toc, toc. Un pivert travaille sur le tronc d’un vieux chêne.
 
 « Pivert ! appelle Lapinette. Toi qui vois la forêt d’en haut, saurais-tu à qui appartiennent ces poils ? »
 
@@ -661,7 +653,7 @@ Ils s’arrêtent devant un passage sous les ronces.
 
 « La grotte est au bout, dit le pivert. Mais prends garde à ses yeux. Ils te feront croire qu’il est ton ami, et tu oublieras pourquoi tu es venue. »
 
-Lapinette remercie l’oiseau. Puis elle rabat ses oreilles et se glisse sous les épines.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="Chapitre 7" tags="" position="1950,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-07.jpg&quot; alt=&quot;Les confidences du chat blanc&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-07b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 7&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Les confidences du chat blanc&lt;/span&gt;&lt;/h1&gt;Sur une souche chauffée par le soleil, un chat blanc lisse soigneusement ses moustaches.
+Lapinette remercie l’oiseau. Puis elle rabat ses oreilles et se glisse sous les épines.&lt;div class=&quot;suite-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-06b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="13" name="Chapitre 7" tags="" position="1950,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-07.jpg&quot; alt=&quot;Les confidences du chat blanc&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 7&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Les confidences du chat blanc&lt;/span&gt;&lt;/h1&gt;Sur une souche chauffée par le soleil, un chat blanc lisse soigneusement ses moustaches.
 
 Lapinette s’arrête. Elle regarde le chat, puis les poils qu’elle tient. Il lève vers elle un œil tranquille.
 
@@ -681,7 +673,7 @@ Il saute à terre et lui montre un étroit sentier de pierres plates.
 
 « Ce chemin te conduira jusqu’aux ronces. La grotte est juste après. Mais dépêche-toi : la forêt lui a laissé sept levers de lune pour rendre les diamants volés. Le dernier, c’est ce soir. S’il les garde encore, le vent l’emportera sur la Lune. »
 
-Lapinette regarde l’ombre des arbres s’étirer sur l’herbe, remercie le chat et se met en route.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="Chapitre 8" tags="" position="2100,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-08.jpg&quot; alt=&quot;La carte d’écorce&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-08b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 8&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La carte d’écorce&lt;/span&gt;&lt;/h1&gt;Au bord d’un ruisseau, un renard blanc se repose à l’ombre des fougères. En entendant des pas, il relève le museau.
+Lapinette regarde l’ombre des arbres s’étirer sur l’herbe, remercie le chat et se met en route.&lt;div class=&quot;suite-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-07b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="14" name="Chapitre 8" tags="" position="2100,0" size="100,100">&lt;div class=&quot;page moment-matin&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-08.jpg&quot; alt=&quot;La carte d’écorce&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 8&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La carte d’écorce&lt;/span&gt;&lt;/h1&gt;Au bord d’un ruisseau, un renard blanc se repose à l’ombre des fougères. En entendant des pas, il relève le museau.
 
 « Tu as l’air bien pressée », dit-il.
 
@@ -701,7 +693,7 @@ Elle glisse la carte dans sa ceinture de feuilles et remercie le renard.
 
 « Garde-la, répond-il. Et retrouve ton diamant. »
 
-Puis elle grimpe la colline, où une lueur rose apparaît entre les épines.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="Chapitre 9" tags="" position="2250,0" size="100,100">&lt;div class=&quot;page moment-grotte&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-09.jpg&quot; alt=&quot;La grotte aux reflets roses&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 9&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La grotte aux reflets roses&lt;/span&gt;&lt;/h1&gt;Lapinette avance sans bruit. La grotte brille jusque dans ses coins les plus sombres. Trois diamants roses reposent dans une niche, bien alignés : ceux que la forêt avait confiés au chat. Tout autour, d’autres diamants roses s’entassent dans les fissures et au pied des parois. Ceux-là ont été volés aux habitants de la forêt. Leurs reflets se mêlent sur la pierre, comme la lumière d’un coucher de soleil.
+Puis elle grimpe la colline, où une lueur rose apparaît entre les épines.&lt;div class=&quot;suite-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-08b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 9-&gt;Chapitre 9]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="15" name="Chapitre 9" tags="" position="2250,0" size="100,100">&lt;div class=&quot;page moment-grotte&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-09.jpg&quot; alt=&quot;La grotte aux reflets roses&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 9&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;La grotte aux reflets roses&lt;/span&gt;&lt;/h1&gt;Lapinette avance sans bruit. La grotte brille jusque dans ses coins les plus sombres. Trois diamants roses reposent dans une niche, bien alignés : ceux que la forêt avait confiés au chat. Tout autour, d’autres diamants roses s’entassent dans les fissures et au pied des parois. Ceux-là ont été volés aux habitants de la forêt. Leurs reflets se mêlent sur la pierre, comme la lumière d’un coucher de soleil.
 
 Parmi ces reflets, une petite lueur bleue éclaire un coussin de mousse.
 
@@ -737,7 +729,7 @@ Un, deux, trois, quatre, cinq.
 
 Les diamants bleus sont tous là. Lapinette se blottit près d’eux, le cœur encore battant.
 
-Dans sa grotte, le chat essuie son museau. Le coussin est vide. Autour de lui, les diamants roses volés brillent toujours. Ceux-là, il doit encore les rendre.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="Chapitre 11" tags="" position="2550,0" size="100,100">&lt;div class=&quot;page moment-grotte&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-11.jpg&quot; alt=&quot;À pas de velours&quot;&gt;&lt;img class=&quot;&quot; src=&quot;images/chapitres/chapitre-11b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 11&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;À pas de velours&lt;/span&gt;&lt;/h1&gt;Lapinette retient son souffle. Dans l’ombre, la moustache du chat s’immobilise : il dort toujours. Elle saisit doucement le diamant posé sur le coussin. Il est froid, lisse, et semble trembler un peu, comme pour saluer sa gardienne.
+Dans sa grotte, le chat essuie son museau. Le coussin est vide. Autour de lui, les diamants roses volés brillent toujours. Ceux-là, il doit encore les rendre.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="17" name="Chapitre 11" tags="" position="2550,0" size="100,100">&lt;div class=&quot;page moment-grotte&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-11.jpg&quot; alt=&quot;À pas de velours&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 11&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;À pas de velours&lt;/span&gt;&lt;/h1&gt;Lapinette retient son souffle. Dans l’ombre, la moustache du chat s’immobilise : il dort toujours. Elle saisit doucement le diamant posé sur le coussin. Il est froid, lisse, et semble trembler un peu, comme pour saluer sa gardienne.
 
 Elle le glisse dans la feuille de châtaignier, renoue le paquet et recule vers la sortie.
 
@@ -755,7 +747,7 @@ Plus tard, dans la grotte, le chat s’éveille. Il cherche la lueur bleue parmi
 
 Puis il s’arrête. Lapinette a retrouvé les cinq diamants bleus. Mais les diamants roses volés aux autres animaux sont toujours là, entassés autour de lui. Tant qu’il ne les aura pas rendus, l’avertissement de la forêt pèsera sur lui.
 
-À l’entrée de la grotte, le soleil descend déjà derrière les branches.&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="Chapitre 12" tags="" position="2700,0" size="100,100">&lt;div class=&quot;page moment-soir&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-12.jpg&quot; alt=&quot;Avant le lever de la lune&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 12&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Avant le lever de la lune&lt;/span&gt;&lt;/h1&gt;Lapinette est rentrée chez elle avec les cinq diamants bleus. Derrière la colline, dans la grotte, le chat est seul devant les diamants roses qu’il a volés aux autres animaux.
+À l’entrée de la grotte, le soleil descend déjà derrière les branches.&lt;div class=&quot;suite-image&quot;&gt;&lt;img src=&quot;images/chapitres/chapitre-11b.jpg&quot; alt=&quot;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;separateur&quot;&gt;&lt;span class=&quot;embleme&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;elan&quot;&gt;[[Poursuis au chapitre 12-&gt;Chapitre 12]]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="18" name="Chapitre 12" tags="" position="2700,0" size="100,100">&lt;div class=&quot;page moment-soir&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img class=&quot;portrait&quot; src=&quot;images/chapitres/chapitre-12.jpg&quot; alt=&quot;Avant le lever de la lune&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Chapitre 12&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;Avant le lever de la lune&lt;/span&gt;&lt;/h1&gt;Lapinette est rentrée chez elle avec les cinq diamants bleus. Derrière la colline, dans la grotte, le chat est seul devant les diamants roses qu’il a volés aux autres animaux.
 
 À l’entrée, l’ombre s’allonge. Ce soir, la lune se lèvera pour la septième fois depuis l’avertissement de la forêt. Le chat regarde les pierres entassées autour de lui. Il doit les rendre avant qu’elle paraisse, ou le vent l’emportera loin de sa maison.
 
