@@ -314,47 +314,63 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-underline-offset: 0.3em;
 }
 
-/* Couverture : l'image telle qu'elle a été pensée, le titre posé dans le blanc du haut */
-tw-story:has(.garde) { padding-top: 0.6em; padding-bottom: 1em; }
-.garde { display: grid; grid-template-columns: auto minmax(20em, 30em); gap: 3em; align-items: center; justify-content: center; min-height: calc(100vh - 1.6em); }
-.garde-image { position: relative; }
-.garde-image img {
-  display: block;
-  height: 94vh;
-  width: auto;
-  max-width: 100%;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-                      linear-gradient(to bottom, #000 0, #000 80%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-              linear-gradient(to bottom, #000 0, #000 80%, transparent 100%);
-  mask-composite: intersect;
+/* Couverture, composée comme la couverture d'un album : le titre en haut, l'image au centre, fondue sur tous
+   ses bords dans la page blanche, puis le bouton pour entrer. Le résumé vient plus bas, en quatrième de couverture. */
+tw-story:has(.garde) { padding-top: 0; padding-bottom: 2em; }
+.une {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.2vh 0 2vh;
+  box-sizing: border-box;
+  text-align: center;
 }
-.garde-titre { position: absolute; top: 2.5%; left: 0; right: 0; text-align: center; padding: 0 1em; }
 .garde .surtitre {
   display: block;
   font-family: "Fraunces", Georgia, serif;
   font-weight: 500;
-  font-size: 0.78em;
-  letter-spacing: 0.16em;
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--violet);
 }
 .garde .grand-titre {
   display: block;
+  margin: 0.12em 0 0;
   font-family: "Fraunces", Georgia, serif;
   font-variation-settings: "SOFT" 100, "opsz" 144;
-  font-weight: 600;
-  font-size: clamp(2em, 5.6vh, 3em);
-  line-height: 1.02;
+  font-weight: 500;
+  font-size: clamp(2.4em, 7.4vh, 4em);
+  line-height: 1;
   color: var(--encre);
-  text-shadow: 0 0 12px #fff, 0 0 24px #fff, 0 0 4px #fff;
-  margin-top: 0.15em;
 }
-.garde-texte { display: flex; flex-direction: column; align-items: center; gap: 1.3em; text-align: center; }
-.garde .nom-auteur { font-family: "Fraunces", Georgia, serif; font-style: italic; font-size: 1.35em; color: var(--encre); }
-.garde .nom-auteur::before { content: "une histoire de "; font-size: 0.75em; color: var(--encre-douce); }
-.garde .synopsis { font-size: 0.98em; line-height: 1.7; color: var(--encre); }
+.garde .nom-auteur {
+  display: block;
+  margin-top: 0.35em;
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-size: 1.25em;
+  color: var(--encre-douce);
+}
+/* Le blanc prévu en haut de l'image est rogné : le titre est déjà au-dessus */
+.garde-image { display: inline-block; overflow: hidden; margin: 0.4em 0 0; }
+.garde-image img {
+  display: block;
+  height: calc(100vh - 14em);
+  min-height: 18em;
+  width: auto;
+  max-width: 100%;
+  margin-top: -17%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
+                      linear-gradient(to bottom, transparent 0, #000 10%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
+              linear-gradient(to bottom, transparent 0, #000 10%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+}
+.garde .commencer { margin-top: -0.6em; position: relative; }
 .garde .commencer tw-link, .garde .commencer .enchantment-link {
   display: inline-flex;
   align-items: center;
@@ -376,9 +392,15 @@ tw-story:has(.garde) { padding-top: 0.6em; padding-bottom: 1em; }
   transition: transform 0.3s ease;
 }
 .garde .commencer tw-link:hover::before { transform: rotate(-12deg) scale(1.15); }
-@media (max-width: 860px) {
-  .garde { grid-template-columns: minmax(0, 1fr); gap: 1.5em; min-height: 0; }
-  .garde-image img { height: auto; width: 100%; }
+/* Quatrième de couverture */
+.quatrieme { max-width: 32em; margin: 1em auto 0; text-align: center; }
+.quatrieme .synopsis { font-size: 1em; line-height: 1.75; }
+.quatrieme .secondaires { margin-top: 1.6em; }
+@media (max-width: 600px) {
+  .garde .grand-titre { font-size: 2.3em; }
+  .garde .surtitre { font-size: 0.68em; }
+  .une { min-height: 0; padding-top: 1.5em; }
+  .garde-image img { height: auto; width: 100%; min-height: 0; }
 }
 
 /* Page « Comment est née cette histoire » */
@@ -422,8 +444,6 @@ tw-story:has(.garde) { padding-top: 0.6em; padding-bottom: 1em; }
 @media (max-width: 600px) {
   tw-story { font-size: 1.04em; padding: 0.8em 1em 3em; }
   .chapitre .titre { font-size: 1.9em; }
-  .garde .grand-titre { font-size: 1.85em; }
-  .garde .surtitre { font-size: 0.68em; }
   .texte { margin-top: -1em; }
   .de { flex-direction: column-reverse; align-items: stretch; }
   .lancer { align-self: center; }
@@ -594,14 +614,14 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="garde-image"><img src="images/couverture.jpg" '
-        'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux">'
-        '<div class="garde-titre"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
-        f'<span class="grand-titre">{TITRE}</span></div></div>'
-        '<div class="garde-texte">'
-        f'<span class="nom-auteur">{AUTRICE}</span>'
-        f'<div class="synopsis">{SYNOPSIS}</div>'
-        f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div>'
+        '<div class="garde"><div class="une">'
+        '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
+        f'<span class="grand-titre">{TITRE}</span>'
+        f'<span class="nom-auteur">une histoire de {AUTRICE}</span>'
+        '<div class="garde-image"><img src="images/couverture.jpg" '
+        'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
+        f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div></div>'
+        f'<div class="quatrieme">{SEPARATEUR}<div class="synopsis">{SYNOPSIS}</div>'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}</div>'
         "</div></div>"
     )
