@@ -23,12 +23,12 @@ POLICES = {"Fraunces": RACINE / "fonts" / "Fraunces.woff2", "Fraunces-i": RACINE
 DIAMANT = RACINE / "images" / "diamant.png"
 
 ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d8607f"
-GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1650
+GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1580
 R = 21   # rayon des pierres
 
 # Centre de chaque pierre
 CASES = {
-    "P1": (560, 40), "P2": (560, 190), 1: (560, 250),
+    "P1": (430, 44), "P2": (690, 44), 1: (560, 250),
     2: (800, 385), 3: (560, 515),
     4: (330, 660), 5: (790, 660),
     6: (330, 840), 7: (560, 840), 8: (790, 840),
@@ -37,7 +37,7 @@ CASES = {
     12: (560, 1290),
     13: (340, 1430), 14: (780, 1430),
 }
-DECALAGE = 80   # place pour les dessins de Lapinette et du chat en tête de l'arbre
+DECALAGE = 0
 CASES = {c: (x, y + (0 if c in ("P1", "P2") else DECALAGE)) for c, (x, y) in CASES.items()}
 FINS = {13, 14}
 OUVERTURES = {"P1": "arbre-lapinette.png", "P2": "arbre-chat.png"}   # médaillons tirés de la couverture
@@ -151,7 +151,16 @@ def construire():
         """Les tiges s'arrêtent au-dessus du dessin pour les deux textes d'ouverture"""
         x, y = CASES[b]
         return (x, y - R_MEDAILLON + R) if b in OUVERTURES else (x, y)
-    svg += [tige(bas(a, titres), CASES[b], R_MEDAILLON if b in OUVERTURES else R) for a, b in sorted(renvois - communs, key=str)]
+    # Les deux textes d'ouverture côte à côte : une flèche de Lapinette vers le chat, puis leurs deux tiges
+    # se rejoignent en une seule flèche vers le chapitre 1
+    ouverture = {("P1", "P2"), ("P2", 1)}
+    assert ouverture <= renvois
+    (x1, y1), (x2, y2) = CASES["P1"], CASES["P2"]
+    svg.append(tige((x1 + R_MEDAILLON + 6, y1), (x2, y2), R_MEDAILLON))
+    jx, jy = (x1 + x2) / 2, max(bas("P1", titres)[1], bas("P2", titres)[1]) + 22
+    svg += [tige(bas(c, titres), (jx, jy), 0, pointe=False) for c in ("P1", "P2")]
+    svg.append(tige((jx, jy), CASES[1], R))
+    svg += [tige(bas(a, titres), CASES[b], R) for a, b in sorted(renvois - communs - ouverture, key=str)]
     cx, cy = CARREFOUR
     svg += [tige(bas(a, titres), (cx, cy), 14, pointe=False) for a in (4, 5)]
     svg += [tige((cx, cy + 16), CASES[b], R) for b in (6, 7, 8)]
