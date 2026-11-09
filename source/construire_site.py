@@ -94,7 +94,9 @@ CSS = """
   --violet-pale: #ece8f5;
   --bleu: #2f74c8;
   --bleu-fonce: #1d4f93;
-  --rose: #c95a86;
+  --rose: #d8607f;
+  --rose-fonce: #b04466;
+  --rose-pale: #fbe8ee;
   --mousse: #7d8a3c;
   --papier: #ffffff;
 }
@@ -142,7 +144,7 @@ tw-story { overflow: clip; }
   font-size: 0.82em;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--violet);
+  color: var(--rose);
   margin-bottom: 0.45em;
 }
 .chapitre .titre {
@@ -188,7 +190,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   text-decoration: underline 1px var(--violet);
   text-underline-offset: 0.3em;
 }
-.elan tw-link::after, .elan .enchantment-link::after { content: "→"; display: inline-block; margin-left: 0.35em; transition: transform 0.2s ease; }
+.elan tw-link::after, .elan .enchantment-link::after { content: "→"; color: var(--rose); display: inline-block; margin-left: 0.35em; transition: transform 0.2s ease; }
 .elan tw-link:hover::after, .elan .enchantment-link:hover::after { transform: translateX(5px); }
 
 /* Le tirage : un encart clair, les choix à gauche, le diamant bleu à droite */
@@ -222,8 +224,8 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   box-sizing: border-box;
   padding: 0.05em 0.6em;
   border-radius: 999px;
-  background: var(--violet-pale);
-  color: var(--violet-fonce);
+  background: var(--rose-pale);
+  color: var(--rose-fonce);
   font-family: "Fraunces", Georgia, serif;
   font-weight: 600;
   font-size: 0.88em;
@@ -334,7 +336,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   font-size: 0.78em;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--violet);
+  color: var(--rose);
 }
 .garde .grand-titre {
   margin: 0.15em 0 0.12em;
