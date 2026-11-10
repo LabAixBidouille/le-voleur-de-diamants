@@ -87,9 +87,13 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
                       linear-gradient(to bottom, transparent 0, #000 4%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in; }}
 .illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
-.illus img.portrait {{ width: auto; max-width: 100%; max-height: 105mm; }}
-.serre .illus img {{ width: auto; max-width: 100%; max-height: 58mm; }}
-.serre2 .illus img {{ max-height: 44mm; }}
+.illus img.portrait {{ width: 100%; }}
+/* Image en hauteur : en pleine page, sans marge, avant le texte du chapitre ; le numéro à cheval sur son bas */
+@page pleine {{ margin: 0; @bottom-center {{ content: none; }} }}
+.pleine-page {{ page: pleine; position: relative; height: 185.5mm; overflow: hidden; break-before: page; }}
+.pleine-page img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: saturate(0.8) brightness(1.03); }}
+.pleine-page .pastille {{ bottom: 8mm; transform: translate(-50%, 0); }}
+.apres-pleine {{ break-before: page; }}
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
   border-radius: 10mm; padding: 1mm 3.5mm 0.8mm; font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt;
   letter-spacing: 1.4pt; text-transform: uppercase; color: {ROSE}; box-shadow: 0 0.8mm 2.5mm rgba(173, 74, 51, 0.25); }}
@@ -153,12 +157,19 @@ def renvoi(cible, pages):
 def chapitre(ch, suivant, pages):
     cle = cle_de(ch["nom"])
     classe = "page-seule" + (" serre" if cle in SERRES else "") + (" serre2" if cle in SERRES2 else "")
-    morceaux = [f'<section class="{classe}"><span class="marque">@@CH{cle}@@</span>']
+    morceaux = []
     image = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}.jpg"
-    if image.exists():
-        pastille = "" if ch["nom"].startswith("Prologue") else f'<span class="pastille">{e(ch["numero"])}</span>'
-        haut = Image.open(image).height > Image.open(image).width
-        morceaux.append(f'<div class="illus"><img class="{"portrait" if haut else ""}" src="{image.as_uri()}" alt="">{pastille}</div>')
+    haut = image.exists() and Image.open(image).height > Image.open(image).width
+    pastille = "" if ch["nom"].startswith("Prologue") else f'<span class="pastille">{e(ch["numero"])}</span>'
+    if haut:
+        # L'image en hauteur occupe toute une page ; le chapitre commence là (c'est la page des renvois)
+        morceaux.append(f'<section class="pleine-page"><span class="marque">@@CH{cle}@@</span>'
+                        f'<img src="{image.as_uri()}" alt="">{pastille}</section>')
+        morceaux.append(f'<section class="apres-pleine{classe.replace("page-seule", "")}">')
+    else:
+        morceaux.append(f'<section class="{classe}"><span class="marque">@@CH{cle}@@</span>')
+        if image.exists():
+            morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt="">{pastille}</div>')
     morceaux.append(f'<h1>{e(ch["titre"])}</h1>')
 
     corps, consigne, tirages, cibles, fin = [], None, [], [], False
