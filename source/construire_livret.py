@@ -94,6 +94,8 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 .pleine-page img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: saturate(0.8) brightness(1.03); }}
 .pleine-page .pastille {{ bottom: 8mm; transform: translate(-50%, 0); }}
 .apres-pleine {{ break-before: page; }}
+/* Une page qui commence par un titre, sans image, garde un grand blanc en haut */
+.ouvre-titre::before {{ content: ""; display: block; height: 20mm; }}
 .numero-chap {{ display: block; text-align: center; font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt;
   letter-spacing: 1.6pt; text-transform: uppercase; color: {ROSE}; margin: 2mm 0 2mm; }}
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
@@ -167,9 +169,10 @@ def chapitre(ch, suivant, pages):
         # L'image en hauteur occupe toute une page ; le chapitre commence là (c'est la page des renvois)
         morceaux.append(f'<section class="pleine-page"><span class="marque">@@CH{cle}@@</span>'
                         f'<img src="{image.as_uri()}" alt=""></section>')
-        morceaux.append(f'<section class="apres-pleine{classe.replace("page-seule", "")}">')
+        morceaux.append(f'<section class="apres-pleine ouvre-titre{classe.replace("page-seule", "")}">')
     else:
-        morceaux.append(f'<section class="{classe}"><span class="marque">@@CH{cle}@@</span>')
+        sans = "" if image.exists() else " ouvre-titre"
+        morceaux.append(f'<section class="{classe}{sans}"><span class="marque">@@CH{cle}@@</span>')
         if image.exists():
             morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt="">{pastille}</div>')
     if haut and pastille:
