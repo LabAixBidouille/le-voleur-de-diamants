@@ -1,6 +1,6 @@
 # Le voleur de diamants
 
-Une histoire dont le lecteur est le héros, librement inspirée du récit imaginé par Nina pendant l'atelier « La quête du curry, une histoire dont tu es le héros » du L.A.B, dans les bibliothèques Méjanes (Aix-en-Provence), en octobre 2026.
+Une histoire dont le lecteur est le héros, librement inspirée du récit imaginé par Nina pendant l'atelier « La quête du curry, une histoire dont tu es le héros » du L.A.B, à la bibliothèque des Deux Ormes (bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.
 
 ## Modifier le livre
 
