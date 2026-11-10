@@ -146,7 +146,10 @@ tw-story { overflow: clip; }
    recadrées, un peu au-dessus du centre pour garder les visages */
 .cote, .suite-image { width: 100%; }
 .toile { width: 100%; }
-.cote img, .suite-image img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: center 40%; }
+/* Images entières, jamais recadrées : pleine largeur du texte, ou hauteur limitée pour celles en hauteur */
+.cote img, .suite-image img { width: 100%; height: auto; }
+.cote img.portrait, .suite-image img.portrait { width: auto; max-width: 100%; max-height: 78vh; }
+.toile { width: auto; }
 .texte { max-width: 40em; margin: 1.5em auto 0; }
 .page:not(:has(.cote)) .texte { margin-top: 1.5em; }
 .suite-image { display: flex; justify-content: center; margin: 1.4em auto 0; max-width: 40em; }
@@ -612,7 +615,8 @@ def passage_chapitre(ch, suivant):
         cote = (f'<div class="cote"><span class="toile"><img class="{"portrait" if portrait else ""}" src="{src}" '
                 f'alt="{ch["titre"]}"></span>{numero}</div>')
     if len(imgs) > 1:
-        suite_image = f'<div class="suite-image"><span class="toile"><img src="{imgs[1][0]}" alt=""></span></div>'
+        suite_image = (f'<div class="suite-image"><span class="toile"><img class="{"portrait" if imgs[1][1] else ""}" '
+                       f'src="{imgs[1][0]}" alt=""></span></div>')
 
     suite = []
     if consigne:
