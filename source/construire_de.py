@@ -140,7 +140,7 @@ h1 {{ font-family: "Fraunces"; font-weight: 500; font-size: 22pt; color: #24231a
         '<p class="consigne">Découpe le long des traits pleins, plie le long des pointillés, puis colle '
         "les languettes à l'intérieur. Sur un dé, deux faces opposées font toujours 7.</p>"
         f'<div class="patron">{patron()}</div>'
-        f'<p class="signature">{TITRE}, une histoire de {AUTRICE}</p></body></html>'
+        f'<p class="signature">{TITRE}, une histoire par {AUTRICE}</p></body></html>'
     )
     SORTIE.parent.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory() as dossier:
