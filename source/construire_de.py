@@ -23,7 +23,7 @@ PATTE = (RACINE / "images" / "diamant.png").as_uri()
 FACE = 29          # côté d'une face, en mm
 LANGUETTE = 7      # profondeur des languettes, en mm
 MARGE = 1          # marge autour du dessin, pour que les traits extérieurs ne soient pas coupés
-NUIT, OR, OR_FONCE, CREME = "#564887", "#e9a3b6", "#d8607f", "#fbe8ee"
+NUIT, OR, OR_FONCE, CREME = "#1e4d48", "#e9a594", "#d4664c", "#e4efec"
 
 # Position (colonne, ligne) de chaque face dans la croix et sa valeur : A en haut, puis B, C, D
 # dans la colonne du milieu, L et R de part et d'autre de B. Opposées : A–C, B–D, L–R.
@@ -123,16 +123,16 @@ def construire():
     css = CSS_LIVRET.split("@page {")[0] + f"""
 @page {{ size: 148mm 210mm; margin: 12mm; }}
 * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
-html {{ font-family: "Literata", serif; font-size: 11pt; line-height: 1.45; color: #24231a; }}
+html {{ font-family: "Literata", serif; font-size: 11pt; line-height: 1.45; color: #1c2d24; }}
 body {{ margin: 0; text-align: center; }}
-h1 {{ font-family: "Fraunces"; font-weight: 500; font-size: 22pt; color: #24231a; margin: 0; }}
+h1 {{ font-family: "Fraunces"; font-weight: 500; font-size: 22pt; color: #1c2d24; margin: 0; }}
 .consigne {{ margin: 0 auto 3mm; max-width: 112mm; }}
 .separateur {{ display: flex; align-items: center; justify-content: center; gap: 2.5mm; margin: 2mm 0 3mm; }}
-.separateur::before, .separateur::after {{ content: ""; width: 16mm; height: 0.25mm; background: linear-gradient(to right, transparent, #7868a8); }}
-.separateur::after {{ background: linear-gradient(to left, transparent, #7868a8); }}
+.separateur::before, .separateur::after {{ content: ""; width: 16mm; height: 0.25mm; background: linear-gradient(to right, transparent, #2e6c66); }}
+.separateur::after {{ background: linear-gradient(to left, transparent, #2e6c66); }}
 .separateur img {{ width: 6mm; }}
 .patron {{ display: flex; justify-content: center; }}
-.signature {{ font-family: "Fraunces"; font-style: italic; font-size: 11pt; color: #564887; margin-top: 2mm; }}
+.signature {{ font-family: "Fraunces"; font-style: italic; font-size: 11pt; color: #1e4d48; margin-top: 2mm; }}
 """
     page = (
         f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{css}</style></head><body>'
