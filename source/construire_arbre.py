@@ -22,7 +22,7 @@ SORTIE = RACINE / "images" / "arbre.svg"
 POLICES = {"Fraunces": RACINE / "fonts" / "Fraunces.woff2", "Fraunces-i": RACINE / "fonts" / "Fraunces-i.woff2"}
 DIAMANT = RACINE / "images" / "diamant.png"
 
-ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#33321f", "#7868a8", "#564887", "#ece8f5", "#2f74c8", "#d8607f"
+ENCRE, VIOLET, VIOLET_FONCE, VIOLET_PALE, BLEU, MOUSSE = "#1c2d24", "#2e6c66", "#1e4d48", "#e4efec", "#5c8fb0", "#d4664c"
 GAUCHE, HAUT, LARGEUR, HAUTEUR = 150, 0, 820, 1660
 R = 21   # rayon des pierres
 

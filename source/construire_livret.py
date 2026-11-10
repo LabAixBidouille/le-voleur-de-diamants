@@ -34,7 +34,7 @@ NOM = "LeVoleurDeDiamants"
 MM = 72 / 25.4
 LARGEUR_PAGE, HAUTEUR_PAGE = 124, 186          # mm
 A4_L, A4_H = 297 * MM, 210 * MM                  # A4 paysage, en points
-ENCRE, DOUCE, VIOLET, VIOLET_FONCE, ROSE, ROSE_FONCE = "#24231a", "#5d5a43", "#7868a8", "#564887", "#d8607f", "#b04466"
+ENCRE, DOUCE, VIOLET, VIOLET_FONCE, ROSE, ROSE_FONCE = "#1c2d24", "#4b5d52", "#2e6c66", "#1e4d48", "#d4664c", "#ad4a33"
 
 
 def police(nom, fichier, italique=False):
@@ -62,11 +62,9 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 
 /* Couverture : l'image en hauteur telle qu'elle a été pensée, le titre posé dans son blanc du haut */
 @page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
-.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; padding-top: 20mm; }}
-.couverture img {{ display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top;
-  filter: saturate(0.8) brightness(1.03); opacity: 0.82;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }}
-.couverture .entete {{ position: absolute; top: 24mm; left: 0; right: 0; text-align: center; }}
+.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; padding-top: 36mm; }}
+.couverture img {{ display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }}
+.couverture .entete {{ position: absolute; top: 9mm; left: 0; right: 0; text-align: center; }}
 .couverture .surtitre {{ font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt; letter-spacing: 1.6pt;
   text-transform: uppercase; color: {ROSE}; }}
 .couverture .titre-livre {{ font-weight: 500; font-size: 27pt; line-height: 1; color: {ENCRE}; margin: 1.5mm 0 1mm;
@@ -90,7 +88,7 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 .serre2 .illus img {{ aspect-ratio: 5 / 2; }}
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
   border-radius: 10mm; padding: 1mm 3.5mm 0.8mm; font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt;
-  letter-spacing: 1.4pt; text-transform: uppercase; color: {ROSE}; box-shadow: 0 0.8mm 2.5mm rgba(176, 68, 102, 0.25); }}
+  letter-spacing: 1.4pt; text-transform: uppercase; color: {ROSE}; box-shadow: 0 0.8mm 2.5mm rgba(173, 74, 51, 0.25); }}
 h1 {{ font-weight: 500; font-size: 18pt; line-height: 1.1; text-align: center; color: {ENCRE}; margin: 0 0 4mm; }}
 
 /* Séparateur, renvois, tirages, fin */
@@ -101,8 +99,8 @@ h1 {{ font-weight: 500; font-size: 18pt; line-height: 1.1; text-align: center; c
 .suite {{ break-inside: avoid; break-before: avoid; }}
 .elan {{ text-align: center; font-style: italic; font-weight: 500; font-size: 11.5pt; color: {VIOLET_FONCE}; }}
 .elan::after {{ content: " →"; color: {ROSE}; }}
-.de {{ margin-top: 4mm; padding: 3mm 4mm 2.5mm; border-radius: 4mm; background: #fdf0f3;
-  box-shadow: 0 1.5mm 4mm -1.5mm rgba(176, 68, 102, 0.35); font-size: 9.8pt; line-height: 1.38; }}
+.de {{ margin-top: 4mm; padding: 3mm 4mm 2.5mm; border-radius: 4mm; background: #eef5f2;
+  box-shadow: 0 1.5mm 4mm -1.5mm rgba(30, 77, 72, 0.35); font-size: 9.8pt; line-height: 1.38; }}
 .consigne {{ font-style: italic; font-size: 10.5pt; color: {VIOLET_FONCE}; margin: 0 0 1.5mm; }}
 .tirage {{ display: grid; grid-template-columns: 14mm 1fr; gap: 2mm; margin: 0 0 1.5mm; }}
 .tirage b {{ align-self: start; text-align: center; background: #fff; border-radius: 10mm; padding: 0.2mm 0;
@@ -205,7 +203,7 @@ def dessin(fichier, nom):
 def document(pages, blanches=0):
     couverture = (
         '<section class="couverture sans-numero">'
-        f'<img src="{(RACINE / "images/couverture.jpg").as_uri()}" alt="">'
+        f'<img src="{(RACINE / "images/couverture.png").as_uri()}" alt="">'
         '<div class="entete"><div class="surtitre">Une histoire dont le lecteur est le héros</div>'
         f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">une histoire par {e(AUTRICE)}</div></div></section>'
         '<section class="page-seule sans-numero"><div class="resume">'
@@ -336,7 +334,7 @@ def traits_de_coupe(dossier):
         '<!doctype html><html><head><style>@page { size: 297mm 210mm; margin: 0; } body { margin: 0; }</style></head>'
         '<body><svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" viewBox="0 0 297 210">'
         f'<g stroke="#c9c9c9" stroke-width="0.2">{"".join(coupe)}</g>'
-        f'<line x1="{pli}" y1="0" x2="{pli}" y2="210" stroke="#d9c6e6" stroke-width="0.2"/>'
+        f'<line x1="{pli}" y1="0" x2="{pli}" y2="210" stroke="#bcd6d0" stroke-width="0.2"/>'
         '</svg></body></html>', encoding="utf-8")
     pdf = Path(dossier) / "traits.pdf"
     imprimer(source, pdf)

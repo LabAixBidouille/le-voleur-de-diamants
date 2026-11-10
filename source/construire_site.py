@@ -71,11 +71,11 @@ MOMENTS = {
 
 # Une campanule, la fleur qui pousse sur presque toutes les images du livre
 CAMPANULE = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E"
-             "%3Cpath d='M6 9 C14 3 24 4 27 13' fill='none' stroke='%237d8a3c' stroke-width='1.8' stroke-linecap='round'/%3E"
-             "%3Cpath d='M12 6 C10 1 15 0 17 4 C15 5 13 6 12 6 Z' fill='%237d8a3c'/%3E"
-             "%3Cpath d='M22 14 C21 21 20 26 17.5 30 L20.5 28.5 L22.5 31.5 L25 28.6 L27.5 31.5 L29.5 28.5 "
-             "L32.5 30 C30 26 29 21 28.5 14 C26.5 12.3 24 12.3 22 14 Z' fill='%237868a8'/%3E"
-             "%3Cpath d='M24 15 C23.6 20 23 24 21.6 27.5' fill='none' stroke='%23a597d2' stroke-width='1.1' stroke-linecap='round'/%3E"
+             "%3Cpath d='M20 36 C20 26 21 16 24 5' fill='none' stroke='%232e6c66' stroke-width='1.6' stroke-linecap='round'/%3E"
+             "%3Cg fill='%232e6c66'%3E%3Cpath d='M20.4 30 C15 29 11 26 9 22 C14 23 18 25 20.4 30Z'/%3E%3Cpath d='M20.6 30 C26 29 30 26 32 22 C27 23 23 25 20.6 30Z'/%3E"
+             "%3Cpath d='M21 22 C16.5 21 13.5 18 12.5 14.5 C16.5 15.5 19.5 18 21 22Z'/%3E%3Cpath d='M21.4 22 C26 21 29 18 30 14.5 C26 15.5 23 18 21.4 22Z'/%3E"
+             "%3Cpath d='M22.4 14.5 C19.5 13.5 17.5 11 17 8 C20 9 22 11.5 22.4 14.5Z'/%3E%3C/g%3E"
+             "%3Cpath d='M23 14 C26 13 28 10.5 28.5 7.5 C25.5 8.5 23.5 11 23 14Z' fill='%23d4664c'/%3E"
              "%3C/svg%3E")
 
 CSS = """
@@ -87,17 +87,17 @@ CSS = """
 /* Couleurs prises aux images : encre vert sous-bois, violet des campanules, bleu des diamants de Lapinette,
    rose de la grotte, vert mousse. Le papier est blanc partout. */
 :root {
-  --encre: #24231a;
-  --encre-douce: #5d5a43;
-  --violet: #7868a8;
-  --violet-fonce: #564887;
-  --violet-pale: #ece8f5;
-  --bleu: #2f74c8;
-  --bleu-fonce: #1d4f93;
-  --rose: #d8607f;
-  --rose-fonce: #b04466;
-  --rose-pale: #fbe8ee;
-  --mousse: #7d8a3c;
+  --encre: #1c2d24;
+  --encre-douce: #4b5d52;
+  --violet: #2e6c66;
+  --violet-fonce: #1e4d48;
+  --violet-pale: #e4efec;
+  --bleu: #5c8fb0;
+  --bleu-fonce: #2f5f7e;
+  --rose: #d4664c;
+  --rose-fonce: #ad4a33;
+  --rose-pale: #fbe9e2;
+  --mousse: #5d6e34;
   --papier: #ffffff;
 }
 html, body, tw-story { background-color: var(--papier); color: var(--encre); transition: background-color 1.2s ease; }
@@ -182,7 +182,7 @@ tw-story { overflow: clip; }
   padding: 0.35em 1.1em 0.3em;
   border-radius: 999px;
   background: #fff;
-  box-shadow: 0 4px 14px -6px rgba(176, 68, 102, 0.28);
+  box-shadow: 0 4px 14px -6px rgba(173, 74, 51, 0.28);
   font-family: "Fraunces", Georgia, serif;
   font-weight: 600;
   font-size: 0.8em;
@@ -239,8 +239,8 @@ tw-link:hover, .enchantment-link:hover { color: var(--violet); }
   border-radius: 18px;
   font-size: 0.95em;
   line-height: 1.5;
-  background: #fdf0f3;
-  box-shadow: 0 14px 30px -14px rgba(176, 68, 102, 0.38);
+  background: #eef5f2;
+  box-shadow: 0 14px 30px -14px rgba(30, 77, 72, 0.4);
 }
 .de-texte { flex: 1; min-width: 0; }
 .de .consigne {
@@ -344,23 +344,16 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .garde {
   height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 46em) minmax(20em, 27em);
+  grid-template-columns: auto minmax(20em, 27em);
   gap: 3.5em;
   align-items: center;
   justify-content: center;
   padding: 2vh 0;
   box-sizing: border-box;
 }
-.garde-image {
-  position: relative;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
-                      linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
-              linear-gradient(to bottom, transparent 0, #000 6%, #000 92%, transparent 100%);
-  mask-composite: intersect;
-}
-.garde-image img { display: block; width: 100%; height: auto; max-height: 92vh; object-fit: contain; }
+.garde-image { position: relative; display: flex; justify-content: center; }
+.garde-image img { display: block; width: auto; max-width: 100%; height: 94vh; object-fit: contain; filter: none; }
+.garde-image::after { display: none; }
 .garde-texte { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(0.7em, 2.2vh, 1.3em); }
 .garde-entete { display: flex; flex-direction: column; align-items: center; }
 .garde .surtitre {
@@ -414,6 +407,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .garde .secondaires .point { margin: 0 0.8em; color: var(--violet); }
 @media (max-width: 860px) {
   .garde { height: auto; grid-template-columns: minmax(0, 1fr); gap: 1.2em; padding-top: 1em; }
+  .garde-image img { height: auto; width: 100%; }
 
 }
 
@@ -468,7 +462,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .miniatures figure { margin: 0; }
 .miniatures figcaption { margin-top: 0.7em; font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--encre-douce); }
 .miniature { display: block; padding: 0; border: none; background: none; cursor: zoom-in; }
-.miniature img { display: block; height: 14em; width: auto; border-radius: 6px; box-shadow: 0 8px 22px -10px rgba(51, 50, 31, 0.5); transition: transform 0.2s ease; }
+.miniature img { display: block; height: 14em; width: auto; border-radius: 6px; box-shadow: 0 8px 22px -10px rgba(28, 45, 36, 0.5); transition: transform 0.2s ease; }
 .miniature:hover img { transform: scale(1.04); }
 .contexte .credits { display: block; margin-top: 2em; font-size: 0.9em; color: var(--encre-douce); }
 .contexte .secondaires { margin-top: 1.4em; }
@@ -652,7 +646,7 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="garde-image"><img src="images/couverture-paysage.jpg" '
+        '<div class="garde"><div class="garde-image"><img src="images/couverture.png" '
         'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
         '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
