@@ -207,7 +207,7 @@ def document(pages, blanches=0):
         '<section class="couverture sans-numero">'
         f'<img src="{(RACINE / "images/couverture.jpg").as_uri()}" alt="">'
         '<div class="entete"><div class="surtitre">Une histoire dont le lecteur est le héros</div>'
-        f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">une histoire de {e(AUTRICE)}</div></div></section>'
+        f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">une histoire par {e(AUTRICE)}</div></div></section>'
         '<section class="page-seule sans-numero"><div class="resume">'
         + "".join(f"<p>{e(p)}</p>" for p in SYNOPSIS.split("\n\n")) + SEPARATEUR + "</div></section>"
     )
