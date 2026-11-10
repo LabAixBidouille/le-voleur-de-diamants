@@ -21,6 +21,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from PIL import Image
 from pypdf import PageObject, PdfReader, PdfWriter, Transformation
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -62,30 +63,33 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 
 /* Couverture : l'image en hauteur telle qu'elle a été pensée, le titre posé dans son blanc du haut */
 @page couverture {{ margin: 0; @bottom-center {{ content: none; }} }}
-.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; padding-top: 36mm; }}
-.couverture img {{ display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }}
-.couverture .entete {{ position: absolute; top: 9mm; left: 0; right: 0; text-align: center; }}
-.couverture .surtitre {{ font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt; letter-spacing: 1.6pt;
-  text-transform: uppercase; color: {ROSE}; }}
-.couverture .titre-livre {{ font-weight: 500; font-size: 27pt; line-height: 1; color: {ENCRE}; margin: 1.5mm 0 1mm;
-  text-shadow: 0 0 4mm #fff, 0 0 2mm #fff; }}
-.couverture .autrice {{ font-family: "Fraunces"; font-style: italic; font-size: 12pt; color: {DOUCE};
-  text-shadow: 0 0 3mm #fff; }}
+.couverture {{ page: couverture; position: relative; height: 185.5mm; overflow: hidden; background: #fff; }}
+.couverture img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }}
+.couverture .voile {{ position: absolute; left: 0; right: 0; top: 0; height: 75mm;
+  background: linear-gradient(to bottom, rgba(16,26,38,0.72), rgba(16,26,38,0)); }}
+.couverture .entete {{ position: absolute; top: 13mm; left: 0; right: 0; text-align: center; padding: 0 8mm; }}
+.couverture .surtitre {{ font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt; letter-spacing: 1.8pt;
+  text-transform: uppercase; color: #f2b39f; text-shadow: 0 0 2mm rgba(0,0,0,0.6); }}
+.couverture .titre-livre {{ font-weight: 600; font-size: 31pt; line-height: 1; color: #fff7ec; margin: 2mm 0 1.5mm;
+  font-variation-settings: "SOFT" 100, "opsz" 144; text-shadow: 0 0 4mm rgba(0,0,0,0.6); }}
+.couverture .autrice {{ font-family: "Fraunces"; font-style: italic; font-size: 13pt; color: #f6e6d4;
+  text-shadow: 0 0 3mm rgba(0,0,0,0.7); }}
 
 /* Quatrième de couverture du résumé, en page 2 */
 .resume {{ display: flex; flex-direction: column; justify-content: center; height: 155mm; text-align: center; }}
 .resume p {{ font-size: 10.5pt; line-height: 1.55; }}
 
-/* Chapitres : l'image au format 3:2, fondue sur ses bords, le numéro à cheval sur son bord bas */
+/* Chapitres : l'image entière, jamais recadrée, fondue sur ses bords, le numéro à cheval sur son bord bas */
 .illus {{ position: relative; margin: 0 0 7mm; }}
-.illus img {{ display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: center 40%;
+.illus img {{ display: block; width: 100%; height: auto; margin: 0 auto;
   filter: saturate(0.8) brightness(1.03);
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
                       linear-gradient(to bottom, transparent 0, #000 4%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in; }}
 .illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
-.serre .illus img {{ aspect-ratio: 2 / 1; }}
-.serre2 .illus img {{ aspect-ratio: 5 / 2; }}
+.illus img.portrait {{ width: auto; max-width: 100%; max-height: 105mm; }}
+.serre .illus img {{ width: auto; max-width: 100%; max-height: 58mm; }}
+.serre2 .illus img {{ max-height: 44mm; }}
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
   border-radius: 10mm; padding: 1mm 3.5mm 0.8mm; font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt;
   letter-spacing: 1.4pt; text-transform: uppercase; color: {ROSE}; box-shadow: 0 0.8mm 2.5mm rgba(173, 74, 51, 0.25); }}
@@ -153,7 +157,8 @@ def chapitre(ch, suivant, pages):
     image = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}.jpg"
     if image.exists():
         pastille = "" if ch["nom"].startswith("Prologue") else f'<span class="pastille">{e(ch["numero"])}</span>'
-        morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt="">{pastille}</div>')
+        haut = Image.open(image).height > Image.open(image).width
+        morceaux.append(f'<div class="illus"><img class="{"portrait" if haut else ""}" src="{image.as_uri()}" alt="">{pastille}</div>')
     morceaux.append(f'<h1>{e(ch["titre"])}</h1>')
 
     corps, consigne, tirages, cibles, fin = [], None, [], [], False
@@ -177,7 +182,8 @@ def chapitre(ch, suivant, pages):
     # Deuxième image du chapitre, comme sur le site : à la fin du texte, avant les choix
     seconde = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}b.jpg"
     if seconde.exists():
-        morceaux.append(f'<div class="illus seconde"><img src="{seconde.as_uri()}" alt=""></div>')
+        haut = Image.open(seconde).height > Image.open(seconde).width
+        morceaux.append(f'<div class="illus seconde"><img class="{"portrait" if haut else ""}" src="{seconde.as_uri()}" alt=""></div>')
 
     suite = []
     if consigne:
@@ -203,7 +209,7 @@ def dessin(fichier, nom):
 def document(pages, blanches=0):
     couverture = (
         '<section class="couverture sans-numero">'
-        f'<img src="{(RACINE / "images/couverture.png").as_uri()}" alt="">'
+        f'<img src="{(RACINE / "images/couverture.png").as_uri()}" alt=""><div class="voile"></div>'
         '<div class="entete"><div class="surtitre">Une histoire dont le lecteur est le héros</div>'
         f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">une histoire par {e(AUTRICE)}</div></div></section>'
         '<section class="page-seule sans-numero"><div class="resume">'
