@@ -56,6 +56,11 @@ CSS = "\n".join([police("Fraunces", "Fraunces.woff2"), police("Fraunces", "Fraun
 html {{ font-family: "Literata", serif; font-size: 11pt; line-height: 1.45; color: {ENCRE}; }}
 body {{ margin: 0; }}
 p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
+/* Quatrième de couverture : le QR code vers le site du livre */
+.qr {{ text-align: center; margin: 0 0 9mm; }}
+.qr img {{ display: block; width: 24mm; height: 24mm; margin: 0 auto 2mm; }}
+.qr p {{ margin: 0; font-size: 9.5pt; }}
+.qr .adresse {{ font-size: 7.5pt; opacity: 0.7; }}
 .page-seule {{ break-before: page; }}
 /* Illustration de chapitre en pleine page, à fond perdu et sans texte (tournée en paysage au besoin) */
 @page plein {{ margin: 0; @bottom-center {{ content: none; }} }}
@@ -90,12 +95,14 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
                       linear-gradient(to bottom, transparent 0, #000 4%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in; }}
-/* Chapitres resserrés : seule l'image rapetisse, le texte reste à 11 pt */
-.serre .illus {{ width: 82%; margin-left: auto; margin-right: auto; }}
-.serre2 .illus {{ width: 50%; }}
-/* Dernier cran : interligne un peu plus serré, le corps reste à 11 pt minimum */
-.serre2 {{ line-height: 1.32; }}
-.serre2 p {{ margin-bottom: 0.45em; }}
+/* Chapitres resserrés : seul le texte se resserre (interligne, espaces entre paragraphes), jamais sous 11 pt ;
+   les images gardent toutes la même taille */
+.serre {{ line-height: 1.39; }}
+.serre p {{ margin-bottom: 0.5em; }}
+/* Second cran : si resserrer ne suffit pas, le chapitre est aéré (plus d'interligne et d'espace entre
+   paragraphes) pour que davantage de lignes passent sur sa dernière page, qui se remplit */
+.serre2 {{ line-height: 1.58; }}
+.serre2 p {{ margin-bottom: 0.9em; }}
 .illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
 .illus img.portrait {{ width: 100%; }}
 /* Image en hauteur : en pleine page, sans marge, avant le texte du chapitre ; le numéro à cheval sur son bas */
@@ -111,6 +118,9 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
 .pastille {{ position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 50%); background: #fff;
   border-radius: 10mm; padding: 1mm 3.5mm 0.8mm; font-family: "Fraunces"; font-weight: 600; font-size: 7.5pt;
   letter-spacing: 1.4pt; text-transform: uppercase; color: {ROSE}; box-shadow: 0 0.8mm 2.5mm rgba(173, 74, 51, 0.25); }}
+/* Après une image en pleine page : la même pastille (encadré blanc et ombre), posée au-dessus du titre */
+.num-titre {{ text-align: center; margin: 3mm 0 5mm; }}
+.num-titre .pastille {{ position: static; transform: none; display: inline-block; }}
 h1 {{ font-weight: 500; font-size: 18pt; line-height: 1.1; text-align: center; color: {ENCRE}; margin: 0 0 4mm; }}
 
 /* Séparateur, renvois, tirages, fin */
@@ -191,7 +201,7 @@ def chapitre(ch, suivant, pages):
             morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt="">{pastille}</div>')
     if (haut or cle in ACTIVES) and pastille:
         # Après une image en pleine page, le numéro revient au-dessus du titre, comme un chapitre sans image
-        morceaux.append(f'<span class="numero-chap">{e(ch["numero"])}</span>')
+        morceaux.append(f'<div class="num-titre"><span class="pastille">{e(ch["numero"])}</span></div>')
     morceaux.append(f'<h1>{e(ch["titre"])}</h1>')
 
     corps, consigne, tirages, cibles, fin = [], None, [], [], False
@@ -269,16 +279,12 @@ def document(pages, blanches=0):
         + "".join(para(p) for p in paragraphes[4:])
         + f'<p class="credits">Une histoire librement inspirée du récit de {e(AUTRICE)}.<br>Réalisation du livre : '
           "Laboratoire d’Aix-périmentation et de Bidouille.</p></section>"
-        '<section class="page-seule contexte"><h2>Les fiches de l’atelier</h2><div class="fiches">'
-        f'<img src="{(fiches / "fiche_recit.jpg").as_uri()}" alt="">'
-        f'<img src="{(fiches / "fiche_personnage_lapinette.jpg").as_uri()}" alt="">'
-        f'<img class="pleine" src="{(fiches / "fiche_situation_1.jpg").as_uri()}" alt="">'
-        "</div></section>"
     )
     arbre = ('<section class="page-seule contexte arbre sans-numero"><h2>L’arbre de l’histoire</h2>'
              f'<img src="{(RACINE / "images/arbre.svg").as_uri()}" alt=""></section>')
     vides = '<section class="page-seule sans-numero">&nbsp;</section>' * blanches
     dos = ('<section class="page-seule sans-numero"><div class="dos">'
+           f'<div class="qr"><img src="{(RACINE / "images" / "qr.svg").as_uri()}" alt=""><p>Lis cette histoire en ligne</p><p class="adresse">labaixbidouille.github.io/le-voleur-de-diamants</p></div>'
            f"<p><b>{e(TITRE)}</b>, une histoire librement inspirée du récit imaginé par {e(AUTRICE)} pendant l’atelier "
            "« La quête du curry, une histoire dont tu es le héros », à la bibliothèque des Deux Ormes "
            "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
