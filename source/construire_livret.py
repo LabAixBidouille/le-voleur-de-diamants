@@ -57,6 +57,10 @@ html {{ font-family: "Literata", serif; font-size: 11pt; line-height: 1.45; colo
 body {{ margin: 0; }}
 p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .page-seule {{ break-before: page; }}
+/* Illustration de chapitre en pleine page, à fond perdu et sans texte (tournée en paysage au besoin) */
+@page plein {{ margin: 0; @bottom-center {{ content: none; }} }}
+.pleine-image {{ page: plein; break-before: page; position: relative; height: 185.5mm; overflow: hidden; }}
+.pleine-image img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
 .sans-numero {{ page: sans-numero; }}
 .marque {{ font-size: 1pt; color: #ffffff; }}
 h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; font-variation-settings: "SOFT" 100; }}
@@ -171,7 +175,11 @@ def chapitre(ch, suivant, pages):
     image = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}.jpg"
     haut = image.exists() and Image.open(image).height > Image.open(image).width
     pastille = "" if ch["nom"].startswith("Prologue") else f'<span class="pastille">{e(ch["numero"])}</span>'
-    if haut:
+    if cle in ACTIVES:
+        # Illustration en paysage passée en pleine page (tournée), avant le chapitre (c'est la page des renvois)
+        morceaux.append(f'<section class="pleine-image"><span class="marque">@@CH{cle}@@</span><img src="{image_pleine(ch).as_uri()}" alt=""></section>')
+        morceaux.append(f'<section class="apres-pleine ouvre-titre{classe.replace("page-seule", "")}">')
+    elif haut:
         # L'image en hauteur occupe toute une page ; le chapitre commence là (c'est la page des renvois)
         morceaux.append(f'<section class="pleine-page"><span class="marque">@@CH{cle}@@</span>'
                         f'<img src="{image.as_uri()}" alt=""></section>')
@@ -181,7 +189,7 @@ def chapitre(ch, suivant, pages):
         morceaux.append(f'<section class="{classe}{sans}"><span class="marque">@@CH{cle}@@</span>')
         if image.exists():
             morceaux.append(f'<div class="illus"><img src="{image.as_uri()}" alt="">{pastille}</div>')
-    if haut and pastille:
+    if (haut or cle in ACTIVES) and pastille:
         # Après une image en pleine page, le numéro revient au-dessus du titre, comme un chapitre sans image
         morceaux.append(f'<span class="numero-chap">{e(ch["numero"])}</span>')
     morceaux.append(f'<h1>{e(ch["titre"])}</h1>')
@@ -232,6 +240,8 @@ def dessin(fichier, nom):
 
 
 def document(pages, blanches=0):
+    global BLANCHES
+    BLANCHES = blanches
     couverture = (
         '<section class="couverture sans-numero">'
         f'<img src="{(RACINE / "images/couverture.png").as_uri()}" alt=""><div class="voile"></div>'
@@ -328,6 +338,35 @@ def stabiliser(source, pdf, pages):
     raise SystemExit("Les numéros de page ne se stabilisent pas.")
 
 
+# Illustrations de chapitre en pleine page (tournées en paysage au besoin) : on en ajoute, dans l'ordre de
+# PLEINES, juste assez pour que le livret tombe sur un multiple de 4 sans page blanche. L'illustration n'est
+# alors plus répétée dans le texte du chapitre.
+PLEINES = [13, 2, 6, 9, 8]
+ACTIVES = []
+BLANCHES = 0
+
+
+def image_pleine(ch):
+    return RACINE / "images" / "pleines" / f"{illustration(ch['nom'])}.jpg"
+
+
+def composer_avec_pleines(dossier):
+    essais = []
+    for n in range(len(PLEINES) + 1):
+        ACTIVES[:] = PLEINES[:n]
+        SERRES.clear()
+        SERRES2.clear()
+        pdf, pages = composer(dossier)
+        essais.append((BLANCHES, n))
+        if BLANCHES == 0:
+            return pdf, pages
+    _, n = min(essais)
+    ACTIVES[:] = PLEINES[:n]
+    SERRES.clear()
+    SERRES2.clear()
+    return composer(dossier)
+
+
 def composer(dossier):
     source = Path(dossier) / "livret.html"
     pdf = Path(dossier) / "livret.pdf"
@@ -399,7 +438,8 @@ def imposer(lecture, traits, sortie, bord_long):
 def construire():
     IMPRESSION.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory() as dossier:
-        pdf, pages = composer(dossier)
+        pdf, pages = composer_avec_pleines(dossier)
+        print("Illustrations en pleine page :", ", ".join(str(c) for c in ACTIVES) or "aucune")
         lecture = IMPRESSION / f"{NOM}_Livret_lecture.pdf"
         lecture.write_bytes(pdf.read_bytes())
         traits = traits_de_coupe(dossier)
