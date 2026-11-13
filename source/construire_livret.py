@@ -53,7 +53,7 @@ CSS = "\n".join([police("Fraunces", "Fraunces.woff2"), police("Fraunces", "Fraun
 @page sans-numero {{ @bottom-center {{ content: none; }} }}
 
 * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }}
-html {{ font-family: "Literata", serif; font-size: 10.5pt; line-height: 1.45; color: {ENCRE}; }}
+html {{ font-family: "Literata", serif; font-size: 11pt; line-height: 1.45; color: {ENCRE}; }}
 body {{ margin: 0; }}
 p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .page-seule {{ break-before: page; }}
@@ -86,6 +86,9 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
                       linear-gradient(to bottom, transparent 0, #000 4%, #000 92%, transparent 100%);
   -webkit-mask-composite: source-in; }}
+/* Chapitres resserrés : seule l'image rapetisse, le texte reste à 11 pt */
+.serre .illus {{ width: 82%; margin-left: auto; margin-right: auto; }}
+.serre2 .illus {{ width: 64%; }}
 .illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
 .illus img.portrait {{ width: 100%; }}
 /* Image en hauteur : en pleine page, sans marge, avant le texte du chapitre ; le numéro à cheval sur son bas */
@@ -230,7 +233,7 @@ def document(pages, blanches=0):
         '<section class="couverture sans-numero">'
         f'<img src="{(RACINE / "images/couverture.png").as_uri()}" alt=""><div class="voile"></div>'
         '<div class="entete"><div class="surtitre">Une histoire dont le lecteur est le héros</div>'
-        f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">une histoire par {e(AUTRICE)}</div></div></section>'
+        f'<div class="titre-livre">{e(TITRE)}</div><div class="autrice">{e(AUTRICE)}</div></div></section>'
         '<section class="page-seule sans-numero"><div class="resume">'
         + "".join(f"<p>{e(p)}</p>" for p in SYNOPSIS.split("\n\n")) + SEPARATEUR + "</div></section>"
     )
