@@ -428,8 +428,32 @@ def imposer(lecture, traits, sortie, bord_long):
     def face(gauche, droite, retournee):
         feuille = PageObject.create_blank_page(width=A4_L, height=A4_H)
         feuille.merge_page(traits)
+        # Chaque page est posée comme un objet « forme » : ses dégradés et motifs suivent la page (posée
+        # directement, un dégradé resterait calé sur la feuille et se décalerait, comme sur la couverture)
+        from pypdf.generic import ArrayObject, DecodedStreamObject, DictionaryObject, FloatObject, NameObject
+        objets, dessin = DictionaryObject(), ""
         for indice, x in ((gauche, x0), (droite, x0 + LARGEUR_PAGE * MM)):
-            feuille.merge_transformed_page(pages[indice - 1], Transformation().translate(x, y0))
+            page = pages[indice - 1]
+            forme = DecodedStreamObject()
+            forme.set_data(page.get_contents().get_data())
+            forme[NameObject("/Type")] = NameObject("/XObject")
+            forme[NameObject("/Subtype")] = NameObject("/Form")
+            forme[NameObject("/BBox")] = ArrayObject([FloatObject(v) for v in page.mediabox])
+            forme[NameObject("/Resources")] = page["/Resources"].clone(ecrivain)
+            objets[NameObject(f"/Page{indice}")] = ecrivain._add_object(forme)
+            dessin += f"q 1 0 0 1 {x:.3f} {y0:.3f} cm /Page{indice} Do Q\n"
+        ressources = feuille["/Resources"] if "/Resources" in feuille else None
+        if ressources is None:
+            feuille[NameObject("/Resources")] = DictionaryObject()
+            ressources = feuille["/Resources"]
+        if "/XObject" in ressources:
+            ressources["/XObject"].update(objets)
+        else:
+            ressources[NameObject("/XObject")] = objets
+        # Les traits de coupe d'abord (repris de leur propre page : la fusion ne les garde pas), puis les pages
+        tout = DecodedStreamObject()
+        tout.set_data(b"q\n" + traits.get_contents().get_data() + b"\nQ\n" + dessin.encode())
+        feuille.replace_contents(tout)
         if retournee:
             feuille.rotate(180)
         ecrivain.add_page(feuille)
