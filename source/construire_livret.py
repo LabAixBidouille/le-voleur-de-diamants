@@ -88,7 +88,10 @@ h1, h2, .titre-livre, .consigne, .fin, .elan {{ font-family: "Fraunces", serif; 
   -webkit-mask-composite: source-in; }}
 /* Chapitres resserrés : seule l'image rapetisse, le texte reste à 11 pt */
 .serre .illus {{ width: 82%; margin-left: auto; margin-right: auto; }}
-.serre2 .illus {{ width: 64%; }}
+.serre2 .illus {{ width: 50%; }}
+/* Dernier cran : interligne un peu plus serré, le corps reste à 11 pt minimum */
+.serre2 {{ line-height: 1.32; }}
+.serre2 p {{ margin-bottom: 0.45em; }}
 .illus.seconde {{ margin: 4mm 0 2mm; break-inside: avoid; }}
 .illus img.portrait {{ width: 100%; }}
 /* Image en hauteur : en pleine page, sans marge, avant le texte du chapitre ; le numéro à cheval sur son bas */
@@ -271,7 +274,7 @@ def document(pages, blanches=0):
            "(bibliothèques Méjanes, Aix-en-Provence), en octobre 2026.</p><p>Réalisation du livre : Laboratoire d’Aix-périmentation et de Bidouille.</p>"
            "</div></section>")
     return (f'<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>{CSS}</style></head>'
-            f"<body>{couverture}{chapitres}{contexte}{arbre}{vides}{dos}</body></html>")
+            f"<body>{couverture}{chapitres}{arbre}{contexte}{vides}{dos}</body></html>")
 
 
 def imprimer(source_html, pdf):
