@@ -202,7 +202,7 @@ tw-story { overflow: clip; }
 
 /* Lien Couverture */
 .retour { max-width: 1120px; margin: 0 auto 0.6em; text-align: left; }
-.retour tw-link, .retour .enchantment-link, .lien-retour tw-link, .lien-retour .enchantment-link {
+.autres-livres, .retour tw-link, .retour .enchantment-link, .lien-retour tw-link, .lien-retour .enchantment-link {
   font-family: "Fraunces", Georgia, serif;
   font-style: italic;
   font-weight: 400;
@@ -210,7 +210,7 @@ tw-story { overflow: clip; }
   color: var(--encre-douce);
 }
 .retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--violet); }
+.autres-livres:hover, .retour tw-link:hover, .lien-retour tw-link:hover { color: var(--violet); }
 
 tw-link, .enchantment-link { color: var(--violet-fonce); font-weight: 600; text-decoration: none; }
 tw-link:hover, .enchantment-link:hover { color: var(--violet); }
@@ -403,10 +403,7 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 .garde .commencer tw-link:hover::before { transform: rotate(-14deg) scale(1.12); }
 .garde .commencer tw-link:hover::after { transform: rotate(14deg) scale(1.12); }
 /* Les deux liens secondaires, sans soulignement, séparés par un point */
-.garde .secondaires { gap: 0; font-size: 0.95em; white-space: nowrap; }
-/* Trois liens sur une ligne quand la place le permet ; sinon le dernier point devient un retour à la ligne */
-@media (min-width: 1301px) { .garde .secondaires { flex-wrap: nowrap; } }
-@media (max-width: 1300px) { .garde .secondaires .point:last-of-type { flex-basis: 100%; height: 0.3em; overflow: hidden; color: transparent; } }
+.garde .secondaires { gap: 0; font-size: 0.95em; }
 .garde .secondaires tw-link, .garde .secondaires .enchantment-link { text-decoration: none; font-weight: 400; color: var(--encre-douce); transition: color 0.2s ease; }
 .garde .secondaires tw-link:hover { color: var(--violet-fonce); }
 .garde .secondaires .point { margin: 0 0.8em; color: var(--violet); }
@@ -482,6 +479,16 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   .miniature img { height: 10em; }
 }
 
+
+/* Lien discret vers la page qui réunit tous les livres de l'atelier, fixé dans le coin en haut à droite de l'écran, sur la page de garde
+   (même police et même couleur que le lien « ← Couverture » des chapitres, en plus petit) */
+.garde { position: relative; }
+.garde .autres-livres { position: fixed; top: 0.9em; right: 1.2em; z-index: 3; font-size: 0.78em; text-decoration: none; letter-spacing: normal; }
+.garde .autres-livres::after { content: " →"; }
+@media (max-width: 760px) {
+  .garde { padding-top: 2.2em !important; }
+  .garde .autres-livres { position: absolute; top: 0.5em; right: 0.4em; }
+}
 """.replace("CAMPANULE", CAMPANULE)
 
 
@@ -653,7 +660,7 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="garde-image"><img src="images/couverture.png" '
+        '<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><div class="garde-image"><img src="images/couverture.png" '
         'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
         '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
@@ -662,7 +669,7 @@ def passage_garde():
         f'<div class="synopsis">{SYNOPSIS.replace("Lance le dé", "Touche le diamant")}</div>'
         f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div>{SEPARATEUR}'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
-        f'<span class="point">·</span>{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}<span class="point">·</span>(link: "Les autres livres")[(goto-url: "https://labaixbidouille.github.io/la-quete-du-curry/")]</div>'
+        f'<span class="point">·</span>{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
         "</div></div>"
     )
 
