@@ -202,7 +202,7 @@ tw-story { overflow: clip; }
 
 /* Lien Couverture */
 .retour { max-width: 1120px; margin: 0 auto 0.6em; text-align: left; }
-.retour tw-link, .retour .enchantment-link, .lien-retour tw-link, .lien-retour .enchantment-link {
+.autres-livres, .retour tw-link, .retour .enchantment-link, .lien-retour tw-link, .lien-retour .enchantment-link {
   font-family: "Fraunces", Georgia, serif;
   font-style: italic;
   font-weight: 400;
@@ -210,7 +210,7 @@ tw-story { overflow: clip; }
   color: var(--encre-douce);
 }
 .retour tw-link::before, .lien-retour tw-link::before { content: "← "; }
-.retour tw-link:hover, .lien-retour tw-link:hover { color: var(--violet); }
+.autres-livres:hover, .retour tw-link:hover, .lien-retour tw-link:hover { color: var(--violet); }
 
 tw-link, .enchantment-link { color: var(--violet-fonce); font-weight: 600; text-decoration: none; }
 tw-link:hover, .enchantment-link:hover { color: var(--violet); }
@@ -478,6 +478,14 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
   .lancer { align-self: center; }
   .miniature img { height: 10em; }
 }
+
+/* Lien discret vers la page qui réunit tous les livres de l'atelier, en bas à droite de la page de garde */
+.garde { position: relative; }
+.autres-livres { position: absolute; right: 0.4em; bottom: 0.6em; z-index: 3; text-decoration: none; }
+.autres-livres::after { content: " →"; }
+@media (max-width: 760px) {
+  .autres-livres { position: static; order: 99; align-self: center; display: block; text-align: center; margin: 1.2em auto 0.4em; }
+}
 """.replace("CAMPANULE", CAMPANULE)
 
 
@@ -649,7 +657,7 @@ def illustration(nom):
 
 def passage_garde():
     return (
-        '<div class="garde"><div class="garde-image"><img src="images/couverture.png" '
+        '<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><div class="garde-image"><img src="images/couverture.png" '
         'alt="Lapinette et le chat noir au pied d’un vieil arbre, les cinq diamants bleus devant eux"></div>'
         '<div class="garde-texte"><div class="garde-entete">'
         '<span class="surtitre">Une histoire dont le lecteur est le héros</span>'
