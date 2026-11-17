@@ -658,6 +658,7 @@ def illustration(nom):
     return f"chapitre-{int(nom.split()[-1]):02d}"
 
 
+# Le patron du dé du livret, à télécharger si on l'a perdu (outils/)
 def passage_garde():
     return (
         '<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><div class="garde-image"><img src="images/couverture.png" '
@@ -669,7 +670,7 @@ def passage_garde():
         f'<div class="synopsis">{SYNOPSIS.replace("Lance le dé", "Touche le diamant")}</div>'
         f'<div class="commencer">{lien("Commencer l’histoire", "Prologue I")}</div>{SEPARATEUR}'
         f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
-        f'<span class="point">·</span>{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
+        f'<span class="point">·</span>{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}<span class="point">·</span>(link-repeat: "Le dé à fabriquer")[(open-url: "outils/Le_voleur_de_diamants_de_a_fabriquer.pdf")]</div>'
         "</div></div>"
     )
 
